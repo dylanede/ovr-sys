@@ -1,0 +1,33 @@
+[package]
+name = "ovr-sys"
+version = "0.1.0"
+authors = ["Dylan Ede <dylanede@googlemail.com>"]
+description = """
+Well documented raw bindings to libOVR v1.15.0, the Oculus Rift PC runtime library.
+
+Documentation is transformed from the original libOVR doxygen docs.\
+"""
+documentation = "https://docs.rs/ovr-sys/^0.1.0"
+repository = "https://github.com/dylanede/ovr-sys"
+readme = "README.md"
+license = "MIT / Apache-2.0 and OCULUS SDK LICENSE"
+keywords = ["oculus", "rift", "libovr", "vr", "ovr"]
+build = "build.rs"
+
+links = "ovr"
+
+[dependencies]
+libc = "^0.2"
+vk-sys = { version = "^0.2", optional = true }
+winapi = { version = "^0.2", optional = true }
+
+[features]
+default = ["opengl"]
+opengl = []
+directx = ["winapi"]
+vulkan = ["vk-sys"]
+audio = ["winapi"]
+
+[package.metadata.docs.rs]
+all-features = true
+default-target = "x86_64-pc-windows-msvc"
