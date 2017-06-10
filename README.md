@@ -4,7 +4,7 @@
 
 ```toml
 [dependencies]
-ovr-sys = "0.1.0"
+ovr-sys = "0.1.1"
 ```
 
 Well documented raw bindings to libOVR v1.15.0, the Oculus Rift PC runtime library.
