@@ -634,6 +634,11 @@ pub struct ovrHmdDesc {
     pub _pad1: [u8; 4],
 }
 
+#[cfg(windows)]
+pub type ovrProcessId = u32;
+#[cfg(not(windows))]
+pub type ovrProcessId = c_int;
+
 #[doc(hidden)]
 pub enum ovrHmdStruct {}
 /// Used as an opaque pointer to an OVR session.
@@ -2511,6 +2516,26 @@ pub struct ovrPerfStatsPerCompositorFrame {
     ///
     /// In the event the GPU time is not available, expect this value to be -1.0f
     pub CompositorGpuEndToVsyncElapsedTime: f32,
+
+    ///
+    /// Async Spacewarp stats (ASW)
+    ///
+
+    /// Will be true if ASW is active for the given frame such that the application is being forced
+    /// into half the frame-rate while the compositor continues to run at full frame-rate.
+    pub AswIsActive: ovrBool,
+
+    /// Increments each time ASW it activated where the app was forced in and out of
+    /// half-rate rendering.
+    pub AswActivatedToggleCount: c_int,
+
+    /// Accumulates the number of frames presented by the compositor which had extrapolated
+    /// ASW frames presented.
+    pub AswPresentedFrameCount: c_int,
+
+    /// Accumulates the number of frames that the compositor tried to present when ASW is
+    /// active but failed.
+    pub AswFailedFrameCount: c_int,
 }
 
 ///
@@ -2559,24 +2584,68 @@ pub const ovrMaxProvidedFrameStats: u32 = 5;
 #[derive(Debug, Copy, Clone)]
 pub struct ovrPerfStats {
     pub _align: [u32; 0],
+    /// `FrameStatsCount` will have a maximum value set by `ovrMaxProvidedFrameStats`
+    /// If the application calls `ovr_GetPerfStats` at the native refresh rate of the HMD
+    /// then `FrameStatsCount` will be 1. If the app's workload happens to force
+    /// `ovr_GetPerfStats` to be called at a lower rate, then `FrameStatsCount` will be 2 or more.
+    /// If the app does not want to miss any performance data for any frame, it needs to
+    /// ensure that it is calling `ovr_SubmitFrame` and `ovr_GetPerfStats` at a rate that is at least:
+    /// "HMD_refresh_rate / ovrMaxProvidedFrameStats". On the Oculus Rift CV1 HMD, this will
+    /// be equal to 18 times per second.
+    ///
+    /// The performance entries will be ordered in reverse chronological order such that the
+    /// first entry will be the most recent one.
     pub FrameStats: [ovrPerfStatsPerCompositorFrame; ovrMaxProvidedFrameStats as usize],
     pub FrameStatsCount: c_int,
+    /// If the app calls `ovr_GetPerfStats` at less than 18 fps for CV1, then `AnyFrameStatsDropped`
+    /// will be `ovrTrue` and `FrameStatsCount` will be equal to `ovrMaxProvidedFrameStats`.
     pub AnyFrameStatsDropped: ovrBool,
+    /// `AdaptiveGpuPerformanceScale` is an edge-filtered value that a caller can use to adjust
+    /// the graphics quality of the application to keep the GPU utilization in check. The value
+    /// is calculated as: (desired_GPU_utilization / current_GPU_utilization)
+    /// As such, when this value is 1.0, the GPU is doing the right amount of work for the app.
+    /// Lower values mean the app needs to pull back on the GPU utilization.
+    /// If the app is going to directly drive render-target resolution using this value, then
+    /// be sure to take the square-root of the value before scaling the resolution with it.
+    /// Changing render target resolutions however is one of the many things an app can do
+    /// increase or decrease the amount of GPU utilization.
+    /// Since `AdaptiveGpuPerformanceScale` is edge-filtered and does not change rapidly
+    /// (i.e. reports non-1.0 values once every couple of seconds) the app can make the
+    /// necessary adjustments and then keep watching the value to see if it has been satisfied.
     pub AdaptiveGpuPerformanceScale: f32,
+
+    /// Will be true if Async Spacewarp (ASW) is available for this system which is dependent on
+    /// several factors such as choice of GPU, OS and debug overrides
+    pub AswIsAvailable: ovrBool,
+
+    /// Contains the Process ID of the VR application the stats are being polled for
+    /// If an app continues to grab perf stats even when it is not visible, then expect this
+    /// value to point to the other VR app that has grabbed focus (i.e. became visible)
+    pub VisibleProcessId: ovrProcessId,
 }
 
 extern "C" {
 
     /// Retrieves performance stats for the VR app as well as the SDK compositor.
     ///
-    /// If the app calling this function is not the one in focus (i.e. not visible in the HMD), then
-    /// outStats will be zero'd out.
+    /// This function will return stats for the VR app that is currently visible in the HMD
+    /// regardless of what VR app is actually calling this function.
     ///
-    /// New stats are populated after each successive call to `ovr_SubmitFrame`. So the app should call
-    /// this function on the same thread it calls `ovr_SubmitFrame`, preferably immediately
-    /// afterwards.
+    /// If the VR app is trying to make sure the stats returned belong to the same application,
+    /// the caller can compare the `VisibleProcessId` with their own process ID. Normally this will
+    /// be the case if the caller is only calling `ovr_GetPerfStats` when `ovr_GetSessionStatus` has
+    /// IsVisible flag set to be true.
     ///
-    /// `session` Specifies an `ovrSession` previously returned by `ovr_Create`.
+    /// If the VR app calling `ovr_GetPerfStats` is actually the one visible in the HMD,
+    /// then new perf stats will only be populated after a new call to `ovr_SubmitFrame`.
+    /// That means subsequent calls to `ovr_GetPerfStats` after the first one without calling
+    /// `ovr_SubmitFrame` will receive a `FrameStatsCount` of zero.
+    ///
+    /// If the VR app is not visible, or was initially marked as `ovrInit_Invisible`, then each call
+    /// to `ovr_GetPerfStats` will immediately fetch new perf stats from the compositor without
+    /// a need for the `ovr_SubmitFrame` call.
+    ///
+    /// **in** `session` Specifies an `ovrSession` previously returned by `ovr_Create`.
     ///
     /// **out** `outStats` Contains the performance stats for the application and SDK compositor
     ///
@@ -2592,7 +2661,7 @@ extern "C" {
     /// as the other fields such as AppMotionToPhotonLatency are independent timing values updated
     /// per-frame.
     ///
-    /// `session` Specifies an `ovrSession` previously returned by `ovr_Create`.
+    /// **in** `session` Specifies an `ovrSession` previously returned by `ovr_Create`.
     ///
     /// Returns an `ovrResult` for which `OVR_SUCCESS(result)` is false upon error and true
     ///         upon success.
@@ -2616,9 +2685,9 @@ extern "C" {
     /// In the even that prediction fails due to various reasons (e.g. the display being off
     /// or app has yet to present any frames), the return value will be current CPU time.
     ///
-    /// `session` Specifies an `ovrSession` previously returned by `ovr_Create`.
+    /// **in** `session` Specifies an `ovrSession` previously returned by `ovr_Create`.
     ///
-    /// `frameIndex` Identifies the frame the caller wishes to target.
+    /// **in** `frameIndex` Identifies the frame the caller wishes to target.
     ///            A value of zero returns the next frame index.
     ///
     /// Returns the absolute frame midpoint time for the given frameIndex.
