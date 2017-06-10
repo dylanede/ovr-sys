@@ -37,4 +37,4 @@ default-target = "x86_64-pc-windows-msvc"
 
 [package.metadata.release]
 pre-release-commit-message = "Release {{version}} 🎉🎉"
-pre-release-replacements = [ {file="README.md", search='ovr-sys = "[a-z0-9\\.-]+"', replace='ovr-sys = "{{version}}"'} ]
+pre-release-replacements = [ {file="README.md", search='ovr-sys = "[a-z0-9\\.-]+"', replace='ovr-sys = "{{version}}"'}, {file="README.md", search='version = "[a-z0-9\\.-]+"', replace='version = "{{version}}"'}]
