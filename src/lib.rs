@@ -46,7 +46,7 @@
 
 extern crate libc;
 
-#[cfg(all(feature = "directx"))]
+#[cfg(all(feature = "directx", windows))]
 extern crate winapi;
 
 #[cfg(feature = "vulkan")]
@@ -68,14 +68,14 @@ use ::std::fmt;
 #[cfg(feature = "opengl")]
 pub mod opengl;
 /// LibOVR functions for performing DirectX interop.
-#[cfg(all(feature = "directx"))]
+#[cfg(all(feature = "directx", windows))]
 pub mod directx;
 /// LibOVR functions for performing Vulkan interop.
 #[cfg(all(feature = "vulkan"))]
 pub mod vulkan;
 /// LibOVR functions associated with audio functionality, including identifying audio devices and
 /// converting audio data into haptics data.
-#[cfg(all(feature = "audio"))]
+#[cfg(all(feature = "audio", windows))]
 pub mod audio;
 
 pub const OVR_PRODUCT_VERSION: u32 = 1;
