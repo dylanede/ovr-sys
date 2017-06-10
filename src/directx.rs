@@ -109,7 +109,7 @@ extern "C" {
     ///
     /// **Example code, not translated from C**
     ///
-    /// ```
+    /// ```ignore
     /// ovrMirrorTexture     mirrorTexture = nullptr;
     /// ovrMirrorTextureDesc mirrorDesc = {};
     /// mirrorDesc.Format = OVR_FORMAT_R8G8B8A8_UNORM_SRGB;
@@ -141,7 +141,7 @@ extern "C" {
     ///
     /// **Example code, not translated from C**
     ///
-    /// ```
+    /// ```ignore
     /// ID3D11Texture2D* d3d11Texture = nullptr;
     /// ovr_GetMirrorTextureBufferDX(session, mirrorTexture, IID_PPV_ARGS(&d3d11Texture));
     /// d3d11DeviceContext->CopyResource(d3d11TextureBackBuffer, d3d11Texture);

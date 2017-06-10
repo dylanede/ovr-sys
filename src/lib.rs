@@ -1682,7 +1682,7 @@ extern "C" {
     /// the HMD and controllers.
     ///
     /// While `ovr_RecenterTrackingOrigin` resets the tracking origin in reference to the HMD's
-    /// current pose, ovr_SpecifyTrackingOrigin allows the caller to explicitly specify a transform
+    /// current pose, `ovr_SpecifyTrackingOrigin` allows the caller to explicitly specify a transform
     /// for the tracking origin. This transform is expected to be an offset to the most recent
     /// recentered origin, so calling this function repeatedly with the same originPose will keep
     /// nudging the recentered origin in that direction.
@@ -1697,8 +1697,12 @@ extern "C" {
     /// This function can emulate `ovr_RecenterTrackingOrigin` as such:
     ///
     /// ```no_run
-    ///     let ts = ovr_GetTrackingState(session, 0.0, ovrFalse);
-    ///     ovr_SpecifyTrackingOrigin(session, ts.HeadPose.ThePose);
+    /// # use ovr_sys::*;
+    /// # unsafe {
+    /// # let session = panic!();
+    /// let ts = ovr_GetTrackingState(session, 0.0, ovrFalse);
+    /// ovr_SpecifyTrackingOrigin(session, ts.HeadPose.ThePose);
+    /// # }
     /// ```
     ///
     /// The roll and pitch orientation components are determined by gravity and cannot be redefined.

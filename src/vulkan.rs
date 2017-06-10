@@ -162,16 +162,26 @@ extern "C" {
     /// Example code
     ///
     /// ```no_run
-    /// let mut mirrorTexture = ptr::null_mut();
-    /// let mirrorDesc = mem::zeroed();
-    /// mirrorDesc.Format = OVR_FORMAT_R8G8B8A8_UNORM_SRGB;
-    /// mirrorDesc.Width  = mirrorWindowWidth;
-    /// mirrorDesc.Height = mirrorWindowHeight;
-    /// let result = ovr_CreateMirrorTextureWithOptionsVk(session, vkDevice, &mirrorDesc as *const _, &mut mirrorTexture as *mut _);
-    /// ...
+    /// # use ::std::{mem, ptr};
+    /// # use ::ovr_sys::*;
+    /// # use ::ovr_sys::vulkan::*;
+    /// # let (session, vk_device, mirror_window_height, mirror_window_width) = panic!();
+    /// # unsafe {
+    /// let mut mirror_texture = ptr::null_mut();
+    /// let mirror_desc = ovrMirrorTextureDesc {
+    ///     Format: OVR_FORMAT_R8G8B8A8_UNORM_SRGB,
+    ///     Width: mirror_window_width,
+    ///     Height: mirror_window_height,
+    ///     .. mem::zeroed()
+    /// };
+    /// let result = ovr_CreateMirrorTextureWithOptionsVk(session, vk_device, &mirror_desc as *const _, &mut mirror_texture as *mut _);
+    ///
+    /// // ...
+    ///
     /// // Destroy the texture when done with it.
-    /// ovr_DestroyMirrorTexture(session, mirrorTexture);
-    /// mirrorTexture = ptr::null_mut();
+    /// ovr_DestroyMirrorTexture(session, mirror_texture);
+    /// mirror_texture = ptr::null_mut();
+    /// # }
     /// ```
     ///
     /// see [`ovr_GetMirrorTextureBufferVk`](../fn.ovr_GetMirrorTextureBufferVk.html), [`ovr_DestroyMirrorTexture`](../fn.ovr_DestroyMirrorTexture.html)
@@ -197,12 +207,26 @@ extern "C" {
     /// Example code:
     ///
     /// ```no_run
-    /// let mut mirrorImage = 0;
-    /// ovr_GetMirrorTextureBufferVk(session, mirrorTexture, &mut mirrorImage as *mut _);
-    /// ...
-    /// vk::CmdBlitImage(commandBuffer, mirrorImage, vk::IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, presentImage, vk::IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &region as *const _, vk::FILTER_LINEAR);
-    /// ...
-    /// vk::QueuePresentKHR(queue, &presentInfo as *const _);
+    /// # extern crate ovr_sys;
+    /// # extern crate vk_sys;
+    /// # fn main() {
+    /// # unsafe {
+    /// # use ovr_sys::*;
+    /// # use ovr_sys::vulkan::*;
+    /// # use vk_sys as vk;
+    /// # let (session, mirror_texture, command_buffer, present_image, region, queue, present_info) = panic!();
+    /// # let vk: vk::DevicePointers = panic!();
+    /// let mut mirror_image = 0;
+    /// ovr_GetMirrorTextureBufferVk(session, mirror_texture, &mut mirror_image as *mut _);
+    ///
+    /// // ...
+    ///
+    /// vk.CmdBlitImage(command_buffer, mirror_image, vk::IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, present_image, vk::IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &region as *const _, vk::FILTER_LINEAR);
+    ///
+    /// // ...
+    ///
+    /// vk.QueuePresentKHR(queue, &present_info as *const _);
+    /// # }}
     /// ```
     ///
     pub fn ovr_GetMirrorTextureBufferVk(
