@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `ovrLayerEyeFov` struct in crate `ovr_sys`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, ovrLayerEyeFov">
+
+    <title>ovr_sys::ovrLayerEyeFov - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc struct">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'>Struct ovrLayerEyeFov</p><div class="block items"><ul><li><a href="#fields">Fields</a></li><li><a href="#implementations">Trait Implementations</a></li></ul></div><p class='location'><a href='index.html'>ovr_sys</a></p><script>window.sidebarCurrent = {name: 'ovrLayerEyeFov', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content">
+<h1 class='fqn'><span class='in-band'>Struct <a href='index.html'>ovr_sys</a>::<wbr><a class="struct" href=''>ovrLayerEyeFov</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../src/ovr_sys/lib.rs.html#2049-2079' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'><div class="docblock attributes">#[repr(C)]
+</div>pub struct ovrLayerEyeFov {
+    pub _align: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">[</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.isize.html">isize</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">; 0]</a>,
+    pub Header: <a class="struct" href="../ovr_sys/struct.ovrLayerHeader.html" title="struct ovr_sys::ovrLayerHeader">ovrLayerHeader</a>,
+    pub ColorTexture: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">[</a><a class="type" href="../ovr_sys/type.ovrTextureSwapChain.html" title="type ovr_sys::ovrTextureSwapChain">ovrTextureSwapChain</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">; 2]</a>,
+    pub Viewport: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">[</a><a class="struct" href="../ovr_sys/struct.ovrRecti.html" title="struct ovr_sys::ovrRecti">ovrRecti</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">; 2]</a>,
+    pub Fov: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">[</a><a class="struct" href="../ovr_sys/struct.ovrFovPort.html" title="struct ovr_sys::ovrFovPort">ovrFovPort</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">; 2]</a>,
+    pub RenderPose: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">[</a><a class="struct" href="../ovr_sys/struct.ovrPosef.html" title="struct ovr_sys::ovrPosef">ovrPosef</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">; 2]</a>,
+    pub SensorSampleTime: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
+}</pre><div class='docblock'><p>Describes a layer that specifies a monoscopic or stereoscopic view.</p>
+
+<p>This is the kind of layer that&#39;s typically used as layer 0 to <code>ovr_SubmitFrame</code>,
+as it is the kind of layer used to render a 3D stereoscopic view.</p>
+
+<p>Three options exist with respect to mono/stereo texture usage:
+   * <code>ColorTexture[0]</code> and <code>ColorTexture[1]</code> contain the left and right stereo renderings, respectively.
+     <code>Viewport[0]</code> and <code>Viewport[1]</code> refer to <code>ColorTexture[0]</code> and <code>ColorTexture[1]</code>, respectively.
+   * <code>ColorTexture[0]</code> contains both the left and right renderings, <code>ColorTexture[1]</code> is NULL,
+     and <code>Viewport[0]</code> and <code>Viewport[1]</code> refer to sub-rects with <code>ColorTexture[0]</code>.
+   * <code>ColorTexture[0]</code> contains a single monoscopic rendering, and <code>Viewport[0]</code> and
+     <code>Viewport[1]</code> both refer to that rendering.</p>
+
+<p>see <a href="type.ovrTextureSwapChain.html"><code>ovrTextureSwapChain</code></a>, <a href="fn.ovr_SubmitFrame.html"><code>ovr_SubmitFrame</code></a></p>
+</div><h2 id='fields' class='fields'>Fields</h2><span id='structfield._align' class="structfield">
+                           <span id='_align.v' class='invisible'>
+                           <code>_align: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">[</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.isize.html">isize</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">; 0]</a></code>
+                           </span></span><span id='structfield.Header' class="structfield">
+                           <span id='Header.v' class='invisible'>
+                           <code>Header: <a class="struct" href="../ovr_sys/struct.ovrLayerHeader.html" title="struct ovr_sys::ovrLayerHeader">ovrLayerHeader</a></code>
+                           </span></span><div class='docblock'><p>Header.Type must be <code>ovrLayerType_EyeFov</code>.</p>
+</div><span id='structfield.ColorTexture' class="structfield">
+                           <span id='ColorTexture.v' class='invisible'>
+                           <code>ColorTexture: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">[</a><a class="type" href="../ovr_sys/type.ovrTextureSwapChain.html" title="type ovr_sys::ovrTextureSwapChain">ovrTextureSwapChain</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">; 2]</a></code>
+                           </span></span><div class='docblock'><p><code>ovrTextureSwapChains</code> for the left and right eye respectively.</p>
+
+<p>The second one of which can be NULL for cases described above.</p>
+</div><span id='structfield.Viewport' class="structfield">
+                           <span id='Viewport.v' class='invisible'>
+                           <code>Viewport: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">[</a><a class="struct" href="../ovr_sys/struct.ovrRecti.html" title="struct ovr_sys::ovrRecti">ovrRecti</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">; 2]</a></code>
+                           </span></span><div class='docblock'><p>Specifies the ColorTexture sub-rect UV coordinates.</p>
+
+<p>Both <code>Viewport[0]</code> and <code>Viewport[1]</code> must be valid.</p>
+</div><span id='structfield.Fov' class="structfield">
+                           <span id='Fov.v' class='invisible'>
+                           <code>Fov: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">[</a><a class="struct" href="../ovr_sys/struct.ovrFovPort.html" title="struct ovr_sys::ovrFovPort">ovrFovPort</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">; 2]</a></code>
+                           </span></span><div class='docblock'><p>The viewport field of view.</p>
+</div><span id='structfield.RenderPose' class="structfield">
+                           <span id='RenderPose.v' class='invisible'>
+                           <code>RenderPose: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">[</a><a class="struct" href="../ovr_sys/struct.ovrPosef.html" title="struct ovr_sys::ovrPosef">ovrPosef</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">; 2]</a></code>
+                           </span></span><div class='docblock'><p>Specifies the position and orientation of each eye view, with the position specified in meters.</p>
+
+<p>RenderPose will typically be the value returned from <code>ovr_CalcEyePoses</code>,
+but can be different in special cases if a different head pose is used for rendering.</p>
+</div><span id='structfield.SensorSampleTime' class="structfield">
+                           <span id='SensorSampleTime.v' class='invisible'>
+                           <code>SensorSampleTime: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a></code>
+                           </span></span><div class='docblock'><p>Specifies the timestamp when the source <code>ovrPosef</code> (used in calculating RenderPose)
+was sampled from the SDK. Typically retrieved by calling <code>ovr_GetTimeInSeconds</code>
+around the instant the application calls <code>ovr_GetTrackingState</code>
+The main purpose for this is to accurately track app tracking latency.</p>
+</div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html" title="trait core::fmt::Debug">Debug</a> for <a class="struct" href="../ovr_sys/struct.ovrLayerEyeFov.html" title="struct ovr_sys::ovrLayerEyeFov">ovrLayerEyeFov</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/ovr_sys/lib.rs.html#2048' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.fmt' class="method"><span id='fmt.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#tymethod.fmt' class='fnname'>fmt</a>(&amp;self, __arg_0: &amp;mut <a class="struct" href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html" title="struct core::fmt::Formatter">Formatter</a>) -&gt; <a class="type" href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html" title="type core::fmt::Result">Result</a></code></span></h4>
+<div class='docblock'><p>Formats the value using the given formatter.</p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a> for <a class="struct" href="../ovr_sys/struct.ovrLayerEyeFov.html" title="struct ovr_sys::ovrLayerEyeFov">ovrLayerEyeFov</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/ovr_sys/lib.rs.html#2048' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'></div><h3 class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a> for <a class="struct" href="../ovr_sys/struct.ovrLayerEyeFov.html" title="struct ovr_sys::ovrLayerEyeFov">ovrLayerEyeFov</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/ovr_sys/lib.rs.html#2048' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.clone' class="method"><span id='clone.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone' class='fnname'>clone</a>(&amp;self) -&gt; <a class="struct" href="../ovr_sys/struct.ovrLayerEyeFov.html" title="struct ovr_sys::ovrLayerEyeFov">ovrLayerEyeFov</a></code></span></h4>
+<div class='docblock'><p>Returns a copy of the value. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">Read more</a></p>
+</div><h4 id='method.clone_from' class="method"><span id='clone_from.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from' class='fnname'>clone_from</a>(&amp;mut self, source: &amp;Self)</code><div class='since' title='Stable since Rust version 1.0.0'>1.0.0</div></span></h4>
+<div class='docblock'><p>Performs copy-assignment from <code>source</code>. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from">Read more</a></p>
+</div></div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "ovr_sys";
+    </script>
+    <script src="../main.js"></script>
+    <script defer src="../search-index.js"></script>
+</body>
+</html>

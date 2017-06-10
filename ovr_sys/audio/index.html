@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `audio` mod in crate `ovr_sys`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, audio">
+
+    <title>ovr_sys::audio - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc mod">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'>Module audio</p><div class="block items"><ul><li><a href="#structs">Structs</a></li><li><a href="#constants">Constants</a></li><li><a href="#functions">Functions</a></li><li><a href="#types">Type Definitions</a></li></ul></div><p class='location'><a href='../index.html'>ovr_sys</a></p><script>window.sidebarCurrent = {name: 'audio', ty: 'mod', relpath: '../'};</script><script defer src="../sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content">
+<h1 class='fqn'><span class='in-band'>Module <a href='../index.html'>ovr_sys</a>::<wbr><a class="mod" href=''>audio</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../../src/ovr_sys/audio.rs.html#1-144' title='goto source code'>[src]</a></span></h1>
+<div class='docblock'><p>LibOVR functions associated with audio functionality, including identifying audio devices and
+converting audio data into haptics data.</p>
+</div><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.ovrAudioChannelData.html"
+                                  title='struct ovr_sys::audio::ovrAudioChannelData'>ovrAudioChannelData</a></td>
+                           <td class='docblock-short'>
+                                <p>Store audio PCM data (as 32b float samples) for an audio channel.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.ovrHapticsClip.html"
+                                  title='struct ovr_sys::audio::ovrHapticsClip'>ovrHapticsClip</a></td>
+                           <td class='docblock-short'>
+                                <p>Store a full Haptics clip, which can be used as data source for multiple <code>ovrHapticsBuffer</code>s.</p>
+                           </td>
+                       </tr></table><h2 id='constants' class='section-header'><a href="#constants">Constants</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_AUDIO_MAX_DEVICE_STR_SIZE.html"
+                                  title='constant ovr_sys::audio::OVR_AUDIO_MAX_DEVICE_STR_SIZE'>OVR_AUDIO_MAX_DEVICE_STR_SIZE</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrHapticsGenMode_Count.html"
+                                  title='constant ovr_sys::audio::ovrHapticsGenMode_Count'>ovrHapticsGenMode_Count</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrHapticsGenMode_PointSample.html"
+                                  title='constant ovr_sys::audio::ovrHapticsGenMode_PointSample'>ovrHapticsGenMode_PointSample</a></td>
+                           <td class='docblock-short'>
+                                <p>Point sample original signal at Haptics frequency</p>
+                           </td>
+                       </tr></table><h2 id='functions' class='section-header'><a href="#functions">Functions</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_GenHapticsFromAudioData.html"
+                                  title='fn ovr_sys::audio::ovr_GenHapticsFromAudioData'>ovr_GenHapticsFromAudioData</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Generates playable Touch Haptics data from an audio channel.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_GetAudioDeviceInGuid.html"
+                                  title='fn ovr_sys::audio::ovr_GetAudioDeviceInGuid'>ovr_GetAudioDeviceInGuid</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Gets the GUID of the preferred VR microphone device.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_GetAudioDeviceInGuidStr.html"
+                                  title='fn ovr_sys::audio::ovr_GetAudioDeviceInGuidStr'>ovr_GetAudioDeviceInGuidStr</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Gets the GUID of the preferred VR microphone device as a string.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_GetAudioDeviceInWaveId.html"
+                                  title='fn ovr_sys::audio::ovr_GetAudioDeviceInWaveId'>ovr_GetAudioDeviceInWaveId</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Gets the ID of the preferred VR audio input device.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_GetAudioDeviceOutGuid.html"
+                                  title='fn ovr_sys::audio::ovr_GetAudioDeviceOutGuid'>ovr_GetAudioDeviceOutGuid</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Gets the GUID of the preferred VR audio device.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_GetAudioDeviceOutGuidStr.html"
+                                  title='fn ovr_sys::audio::ovr_GetAudioDeviceOutGuidStr'>ovr_GetAudioDeviceOutGuidStr</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Gets the GUID of the preferred VR audio device as a string.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_GetAudioDeviceOutWaveId.html"
+                                  title='fn ovr_sys::audio::ovr_GetAudioDeviceOutWaveId'>ovr_GetAudioDeviceOutWaveId</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Gets the ID of the preferred VR audio output device.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_ReadWavFromBuffer.html"
+                                  title='fn ovr_sys::audio::ovr_ReadWavFromBuffer'>ovr_ReadWavFromBuffer</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Reads an audio channel from Wav (Waveform Audio File) data.
+Input must be a byte buffer representing a valid Wav file. Audio samples from the specified channel are read,
+converted to float [-1.0f, 1.0f] and returned through <code>ovrAudioChannelData</code>.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_ReleaseAudioChannelData.html"
+                                  title='fn ovr_sys::audio::ovr_ReleaseAudioChannelData'>ovr_ReleaseAudioChannelData</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Releases memory allocated for <code>ovrAudioChannelData</code>. Must be called to avoid memory leak.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_ReleaseHapticsClip.html"
+                                  title='fn ovr_sys::audio::ovr_ReleaseHapticsClip'>ovr_ReleaseHapticsClip</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Releases memory allocated for <code>ovrHapticsClip</code>. Must be called to avoid memory leak.</p>
+                           </td>
+                       </tr></table><h2 id='types' class='section-header'><a href="#types">Type Definitions</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class="type" href="type.ovrHapticsGenMode.html"
+                                  title='type ovr_sys::audio::ovrHapticsGenMode'>ovrHapticsGenMode</a></td>
+                           <td class='docblock-short'>
+                                <p>Modes used to generate Touch Haptics from audio PCM buffer.</p>
+                           </td>
+                       </tr></table></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../";
+        window.currentCrate = "ovr_sys";
+    </script>
+    <script src="../../main.js"></script>
+    <script defer src="../../search-index.js"></script>
+</body>
+</html>

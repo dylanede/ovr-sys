@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `ovrHmdDesc` struct in crate `ovr_sys`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, ovrHmdDesc">
+
+    <title>ovr_sys::ovrHmdDesc - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc struct">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'>Struct ovrHmdDesc</p><div class="block items"><ul><li><a href="#fields">Fields</a></li><li><a href="#implementations">Trait Implementations</a></li></ul></div><p class='location'><a href='index.html'>ovr_sys</a></p><script>window.sidebarCurrent = {name: 'ovrHmdDesc', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content">
+<h1 class='fqn'><span class='in-band'>Struct <a href='index.html'>ovr_sys</a>::<wbr><a class="struct" href=''>ovrHmdDesc</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../src/ovr_sys/lib.rs.html#597-635' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'><div class="docblock attributes">#[repr(C)]
+</div>pub struct ovrHmdDesc {
+    pub _align: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">[</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.isize.html">isize</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">; 0]</a>,
+    pub Type: <a class="type" href="../ovr_sys/type.ovrHmdType.html" title="type ovr_sys::ovrHmdType">ovrHmdType</a>,
+    pub _pad0: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">[</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">; 4]</a>,
+    pub ProductName: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">[</a><a class="type" href="https://doc.rust-lang.org/libc/x86_64-pc-windows-msvc/libc/windows/type.c_char.html" title="type libc::windows::c_char">c_char</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">; 64]</a>,
+    pub Manufacturer: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">[</a><a class="type" href="https://doc.rust-lang.org/libc/x86_64-pc-windows-msvc/libc/windows/type.c_char.html" title="type libc::windows::c_char">c_char</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">; 64]</a>,
+    pub VendorId: <a class="type" href="https://doc.rust-lang.org/libc/x86_64-pc-windows-msvc/libc/type.c_short.html" title="type libc::c_short">c_short</a>,
+    pub ProductId: <a class="type" href="https://doc.rust-lang.org/libc/x86_64-pc-windows-msvc/libc/type.c_short.html" title="type libc::c_short">c_short</a>,
+    pub SerialNumber: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">[</a><a class="type" href="https://doc.rust-lang.org/libc/x86_64-pc-windows-msvc/libc/windows/type.c_char.html" title="type libc::windows::c_char">c_char</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">; 24]</a>,
+    pub FirmwareMajor: <a class="type" href="https://doc.rust-lang.org/libc/x86_64-pc-windows-msvc/libc/type.c_short.html" title="type libc::c_short">c_short</a>,
+    pub FirmwareMinor: <a class="type" href="https://doc.rust-lang.org/libc/x86_64-pc-windows-msvc/libc/type.c_short.html" title="type libc::c_short">c_short</a>,
+    pub AvailableHmdCaps: <a class="type" href="https://doc.rust-lang.org/libc/x86_64-pc-windows-msvc/libc/type.c_uint.html" title="type libc::c_uint">c_uint</a>,
+    pub DefaultHmdCaps: <a class="type" href="https://doc.rust-lang.org/libc/x86_64-pc-windows-msvc/libc/type.c_uint.html" title="type libc::c_uint">c_uint</a>,
+    pub AvailableTrackingCaps: <a class="type" href="https://doc.rust-lang.org/libc/x86_64-pc-windows-msvc/libc/type.c_uint.html" title="type libc::c_uint">c_uint</a>,
+    pub DefaultTrackingCaps: <a class="type" href="https://doc.rust-lang.org/libc/x86_64-pc-windows-msvc/libc/type.c_uint.html" title="type libc::c_uint">c_uint</a>,
+    pub DefaultEyeFov: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">[</a><a class="struct" href="../ovr_sys/struct.ovrFovPort.html" title="struct ovr_sys::ovrFovPort">ovrFovPort</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">; 2]</a>,
+    pub MaxEyeFov: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">[</a><a class="struct" href="../ovr_sys/struct.ovrFovPort.html" title="struct ovr_sys::ovrFovPort">ovrFovPort</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">; 2]</a>,
+    pub Resolution: <a class="struct" href="../ovr_sys/struct.ovrSizei.html" title="struct ovr_sys::ovrSizei">ovrSizei</a>,
+    pub DisplayRefreshRate: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>,
+    pub _pad1: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">[</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">; 4]</a>,
+}</pre><div class='docblock'><p>This is a complete descriptor of the HMD.</p>
+</div><h2 id='fields' class='fields'>Fields</h2><span id='structfield._align' class="structfield">
+                           <span id='_align.v' class='invisible'>
+                           <code>_align: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">[</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.isize.html">isize</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">; 0]</a></code>
+                           </span></span><span id='structfield.Type' class="structfield">
+                           <span id='Type.v' class='invisible'>
+                           <code>Type: <a class="type" href="../ovr_sys/type.ovrHmdType.html" title="type ovr_sys::ovrHmdType">ovrHmdType</a></code>
+                           </span></span><div class='docblock'><p>The type of HMD.</p>
+</div><span id='structfield._pad0' class="structfield">
+                           <span id='_pad0.v' class='invisible'>
+                           <code>_pad0: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">[</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">; 4]</a></code>
+                           </span></span><div class='docblock'><p>\internal struct paddding.</p>
+</div><span id='structfield.ProductName' class="structfield">
+                           <span id='ProductName.v' class='invisible'>
+                           <code>ProductName: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">[</a><a class="type" href="https://doc.rust-lang.org/libc/x86_64-pc-windows-msvc/libc/windows/type.c_char.html" title="type libc::windows::c_char">c_char</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">; 64]</a></code>
+                           </span></span><div class='docblock'><p>UTF8-encoded product identification string (e.g. &quot;Oculus Rift DK1&quot;).</p>
+</div><span id='structfield.Manufacturer' class="structfield">
+                           <span id='Manufacturer.v' class='invisible'>
+                           <code>Manufacturer: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">[</a><a class="type" href="https://doc.rust-lang.org/libc/x86_64-pc-windows-msvc/libc/windows/type.c_char.html" title="type libc::windows::c_char">c_char</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">; 64]</a></code>
+                           </span></span><div class='docblock'><p>UTF8-encoded HMD manufacturer identification string.</p>
+</div><span id='structfield.VendorId' class="structfield">
+                           <span id='VendorId.v' class='invisible'>
+                           <code>VendorId: <a class="type" href="https://doc.rust-lang.org/libc/x86_64-pc-windows-msvc/libc/type.c_short.html" title="type libc::c_short">c_short</a></code>
+                           </span></span><div class='docblock'><p>HID (USB) vendor identifier of the device.</p>
+</div><span id='structfield.ProductId' class="structfield">
+                           <span id='ProductId.v' class='invisible'>
+                           <code>ProductId: <a class="type" href="https://doc.rust-lang.org/libc/x86_64-pc-windows-msvc/libc/type.c_short.html" title="type libc::c_short">c_short</a></code>
+                           </span></span><div class='docblock'><p>HID (USB) product identifier of the device.</p>
+</div><span id='structfield.SerialNumber' class="structfield">
+                           <span id='SerialNumber.v' class='invisible'>
+                           <code>SerialNumber: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">[</a><a class="type" href="https://doc.rust-lang.org/libc/x86_64-pc-windows-msvc/libc/windows/type.c_char.html" title="type libc::windows::c_char">c_char</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">; 24]</a></code>
+                           </span></span><div class='docblock'><p>HMD serial number.</p>
+</div><span id='structfield.FirmwareMajor' class="structfield">
+                           <span id='FirmwareMajor.v' class='invisible'>
+                           <code>FirmwareMajor: <a class="type" href="https://doc.rust-lang.org/libc/x86_64-pc-windows-msvc/libc/type.c_short.html" title="type libc::c_short">c_short</a></code>
+                           </span></span><div class='docblock'><p>HMD firmware major version.</p>
+</div><span id='structfield.FirmwareMinor' class="structfield">
+                           <span id='FirmwareMinor.v' class='invisible'>
+                           <code>FirmwareMinor: <a class="type" href="https://doc.rust-lang.org/libc/x86_64-pc-windows-msvc/libc/type.c_short.html" title="type libc::c_short">c_short</a></code>
+                           </span></span><div class='docblock'><p>HMD firmware minor version.</p>
+</div><span id='structfield.AvailableHmdCaps' class="structfield">
+                           <span id='AvailableHmdCaps.v' class='invisible'>
+                           <code>AvailableHmdCaps: <a class="type" href="https://doc.rust-lang.org/libc/x86_64-pc-windows-msvc/libc/type.c_uint.html" title="type libc::c_uint">c_uint</a></code>
+                           </span></span><div class='docblock'><p>Capability bits described by <code>ovrHmdCaps</code> which the HMD currently supports.</p>
+</div><span id='structfield.DefaultHmdCaps' class="structfield">
+                           <span id='DefaultHmdCaps.v' class='invisible'>
+                           <code>DefaultHmdCaps: <a class="type" href="https://doc.rust-lang.org/libc/x86_64-pc-windows-msvc/libc/type.c_uint.html" title="type libc::c_uint">c_uint</a></code>
+                           </span></span><div class='docblock'><p>Capability bits described by <code>ovrHmdCaps</code> which are default for the current Hmd.</p>
+</div><span id='structfield.AvailableTrackingCaps' class="structfield">
+                           <span id='AvailableTrackingCaps.v' class='invisible'>
+                           <code>AvailableTrackingCaps: <a class="type" href="https://doc.rust-lang.org/libc/x86_64-pc-windows-msvc/libc/type.c_uint.html" title="type libc::c_uint">c_uint</a></code>
+                           </span></span><div class='docblock'><p>Capability bits described by <code>ovrTrackingCaps</code> which the system currently supports.</p>
+</div><span id='structfield.DefaultTrackingCaps' class="structfield">
+                           <span id='DefaultTrackingCaps.v' class='invisible'>
+                           <code>DefaultTrackingCaps: <a class="type" href="https://doc.rust-lang.org/libc/x86_64-pc-windows-msvc/libc/type.c_uint.html" title="type libc::c_uint">c_uint</a></code>
+                           </span></span><div class='docblock'><p>Capability bits described by <code>ovrTrackingCaps</code> which are default for the current system.</p>
+</div><span id='structfield.DefaultEyeFov' class="structfield">
+                           <span id='DefaultEyeFov.v' class='invisible'>
+                           <code>DefaultEyeFov: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">[</a><a class="struct" href="../ovr_sys/struct.ovrFovPort.html" title="struct ovr_sys::ovrFovPort">ovrFovPort</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">; 2]</a></code>
+                           </span></span><div class='docblock'><p>Defines the recommended FOVs for the HMD.</p>
+</div><span id='structfield.MaxEyeFov' class="structfield">
+                           <span id='MaxEyeFov.v' class='invisible'>
+                           <code>MaxEyeFov: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">[</a><a class="struct" href="../ovr_sys/struct.ovrFovPort.html" title="struct ovr_sys::ovrFovPort">ovrFovPort</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">; 2]</a></code>
+                           </span></span><div class='docblock'><p>Defines the maximum FOVs for the HMD.</p>
+</div><span id='structfield.Resolution' class="structfield">
+                           <span id='Resolution.v' class='invisible'>
+                           <code>Resolution: <a class="struct" href="../ovr_sys/struct.ovrSizei.html" title="struct ovr_sys::ovrSizei">ovrSizei</a></code>
+                           </span></span><div class='docblock'><p>Resolution of the full HMD screen (both eyes) in pixels.</p>
+</div><span id='structfield.DisplayRefreshRate' class="structfield">
+                           <span id='DisplayRefreshRate.v' class='invisible'>
+                           <code>DisplayRefreshRate: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a></code>
+                           </span></span><div class='docblock'><p>Nominal refresh rate of the display in cycles per second at the time of HMD creation.</p>
+</div><span id='structfield._pad1' class="structfield">
+                           <span id='_pad1.v' class='invisible'>
+                           <code>_pad1: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">[</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">; 4]</a></code>
+                           </span></span><div class='docblock'><p>\internal struct paddding.</p>
+</div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a> for <a class="struct" href="../ovr_sys/struct.ovrHmdDesc.html" title="struct ovr_sys::ovrHmdDesc">ovrHmdDesc</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/ovr_sys/lib.rs.html#588-592' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.clone' class="method"><span id='clone.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone' class='fnname'>clone</a>(&amp;self) -&gt; <a class="struct" href="../ovr_sys/struct.ovrHmdDesc.html" title="struct ovr_sys::ovrHmdDesc">ovrHmdDesc</a></code></span></h4>
+<div class='docblock'><p>Returns a copy of the value. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">Read more</a></p>
+</div><h4 id='method.clone_from' class="method"><span id='clone_from.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from' class='fnname'>clone_from</a>(&amp;mut self, source: &amp;Self)</code><div class='since' title='Stable since Rust version 1.0.0'>1.0.0</div></span></h4>
+<div class='docblock'><p>Performs copy-assignment from <code>source</code>. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from">Read more</a></p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a> for <a class="struct" href="../ovr_sys/struct.ovrHmdDesc.html" title="struct ovr_sys::ovrHmdDesc">ovrHmdDesc</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/ovr_sys/lib.rs.html#595' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'></div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "ovr_sys";
+    </script>
+    <script src="../main.js"></script>
+    <script defer src="../search-index.js"></script>
+</body>
+</html>

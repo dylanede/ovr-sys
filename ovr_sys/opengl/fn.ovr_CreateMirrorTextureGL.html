@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `ovr_CreateMirrorTextureGL` fn in crate `ovr_sys`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, ovr_CreateMirrorTextureGL">
+
+    <title>ovr_sys::opengl::ovr_CreateMirrorTextureGL - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc fn">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='../index.html'>ovr_sys</a>::<wbr><a href='index.html'>opengl</a></p><script>window.sidebarCurrent = {name: 'ovr_CreateMirrorTextureGL', ty: 'fn', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content">
+<h1 class='fqn'><span class='in-band'>Function <a href='../index.html'>ovr_sys</a>::<wbr><a href='index.html'>opengl</a>::<wbr><a class="fn" href=''>ovr_CreateMirrorTextureGL</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../../src/ovr_sys/opengl.rs.html#81' title='goto source code'>[src]</a></span></h1>
+<pre class='rust fn'>pub unsafe extern &quot;C&quot; fn ovr_CreateMirrorTextureGL(<br>&nbsp;&nbsp;&nbsp;&nbsp;session: <a class="type" href="../../ovr_sys/type.ovrSession.html" title="type ovr_sys::ovrSession">ovrSession</a>, <br>&nbsp;&nbsp;&nbsp;&nbsp;desc: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.pointer.html">*const </a><a class="struct" href="../../ovr_sys/struct.ovrMirrorTextureDesc.html" title="struct ovr_sys::ovrMirrorTextureDesc">ovrMirrorTextureDesc</a>, <br>&nbsp;&nbsp;&nbsp;&nbsp;out_MirrorTexture: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.pointer.html">*mut </a><a class="type" href="../../ovr_sys/type.ovrMirrorTexture.html" title="type ovr_sys::ovrMirrorTexture">ovrMirrorTexture</a><br>) -&gt; <a class="type" href="../../ovr_sys/type.ovrResult.html" title="type ovr_sys::ovrResult">ovrResult</a></pre><div class='docblock'><p>Creates a Mirror Texture which is auto-refreshed to mirror Rift contents produced by this application.</p>
+
+<p>A second call to <code>ovr_CreateMirrorTextureGL</code> for a given <code>ovrSession</code> before destroying the first one
+is not supported and will result in an error return.</p>
+
+<p><strong>in</strong> <code>session</code> Specifies an <code>ovrSession</code> previously returned by <code>ovr_Create</code>.</p>
+
+<p><strong>in</strong> <code>desc</code> Specifies the requested mirror texture description.</p>
+
+<p><strong>out</strong> <code>out_MirrorTexture</code> Specifies the created <code>ovrMirrorTexture</code>, which will be valid upon a successful return value, else it will be NULL.
+            This texture must be eventually destroyed via <code>ovr_DestroyMirrorTexture</code> before destroying the session with <code>ovr_Destroy</code>.</p>
+
+<p>Returns an <code>ovrResult</code> indicating success or failure. In the case of failure, use
+        <code>ovr_GetLastErrorInfo</code> to get more information.</p>
+
+<p><strong>Note</strong>: The format provided should be thought of as the format the distortion compositor will use when writing into the mirror
+texture. It is highly recommended that mirror textures are requested as sRGB formats because the distortion compositor
+does sRGB-correct rendering. If the application requests a non-sRGB format (e.g. <code>R8G8B8A8_UNORM</code>) as the mirror texture,
+then the application might have to apply a manual linear-to-gamma conversion when reading from the mirror texture.
+Failure to do so can result in incorrect gamma conversions leading to gamma-curve artifacts and color banding.</p>
+
+<p>see <code>ovr_GetMirrorTextureBufferGL</code>, <code>ovr_DestroyMirrorTexture</code></p>
+</div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../";
+        window.currentCrate = "ovr_sys";
+    </script>
+    <script src="../../main.js"></script>
+    <script defer src="../../search-index.js"></script>
+</body>
+</html>

@@ -1,0 +1,2859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `ovr_sys` crate.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, ovr_sys">
+
+    <title>ovr_sys - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc mod">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'>Crate ovr_sys</p><div class="block items"><ul><li><a href="#modules">Modules</a></li><li><a href="#structs">Structs</a></li><li><a href="#constants">Constants</a></li><li><a href="#functions">Functions</a></li><li><a href="#types">Type Definitions</a></li></ul></div><p class='location'></p><script>window.sidebarCurrent = {name: 'ovr_sys', ty: 'mod', relpath: '../'};</script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content">
+<h1 class='fqn'><span class='in-band'>Crate <a class="mod" href=''>ovr_sys</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../src/ovr_sys/lib.rs.html#1-3137' title='goto source code'>[src]</a></span></h1>
+<div class='docblock'><p>This crate provides raw unsafe bindings to LibOVR, the Oculus Rift runtime library.</p>
+
+<p><strong>The currently targeted version of LibOVR is 1.15.0</strong></p>
+
+<p>Good API documentation is provided here, transformed from the original doxygen documentation.
+More high level documentation can be found on <a href="https://developer.oculus.com">the Oculus developer web site</a>.
+Example code has been translated from C to mostly equivalent Rust (TODO: except in the DirectX module).</p>
+
+<p>The bindings are generated directly from the LibOVR headers, and some conventions have been
+followed when translating from the C code.</p>
+
+<ul>
+<li>Each enum has been translated into a type definition (defined to be <code>i32</code>) and a collection of
+constants. This preserves the ability to easily use them as bitflags.</li>
+<li>Alignment requirements on structs have been implemented using dummy zero-sized array fields.
+When initialising these fields, the value <code>[]</code> will suffice.</li>
+<li><p>Where the layout of structs differs between 32-bit and 64-bit platforms due to dummy padding
+fields, conditional compilation is used. For this reason it is recommended to not construct the
+affected structs in a typical fashion as this may result in code that compiles on one but not both
+architectures (due to missing/spurious padding field).</p>
+
+<p>A reasonable approach is to use <code>..</code> struct initialisation syntax, like so:</p>
+
+<pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="ident">init_params</span> <span class="op">=</span> <span class="ident">ovrInitParams</span> {
+   <span class="ident">Flags</span>: <span class="ident">ovrInit_RequestVersion</span>,
+   <span class="ident">RequestedMinorVersion</span>: <span class="ident">OVR_MINOR_VERSION</span>,
+   <span class="ident">LogCallback</span>: <span class="prelude-val">None</span>,
+   <span class="ident">UserData</span>: <span class="number">0</span>,
+   <span class="ident">ConnectionTimeoutMS</span>: <span class="number">0</span>,
+   .. <span class="ident">mem</span>::<span class="ident">uninitialized</span>()
+};</pre>
+
+<p>Like all unsafe code uses of <code>::std::mem::uninitialized()</code> should be scrutinised for mistakes.</p></li>
+<li><p>Function-like C macros have been translated into functions with the same name.</p></li>
+</ul>
+
+<p>Optional features are provided in sub-modules. These features are <code>audio</code>, <code>directx</code>, <code>opengl</code> and <code>vulkan</code>.
+These sub-modules will only be present if the corresponding feature has been enabled in the
+Cargo manifest. <code>opengl</code> is enabled by default.</p>
+</div><h2 id='modules' class='section-header'><a href="#modules">Modules</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class="mod" href="audio/index.html"
+                                  title='mod ovr_sys::audio'>audio</a></td>
+                           <td class='docblock-short'>
+                                <p>LibOVR functions associated with audio functionality, including identifying audio devices and
+converting audio data into haptics data.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="mod" href="directx/index.html"
+                                  title='mod ovr_sys::directx'>directx</a></td>
+                           <td class='docblock-short'>
+                                <p>LibOVR functions for performing DirectX interop.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="mod" href="opengl/index.html"
+                                  title='mod ovr_sys::opengl'>opengl</a></td>
+                           <td class='docblock-short'>
+                                <p>LibOVR functions for performing OpenGL interop.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="mod" href="vulkan/index.html"
+                                  title='mod ovr_sys::vulkan'>vulkan</a></td>
+                           <td class='docblock-short'>
+                                <p>LibOVR functions for performing Vulkan interop.</p>
+                           </td>
+                       </tr></table><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.ovrBoundaryLookAndFeel.html"
+                                  title='struct ovr_sys::ovrBoundaryLookAndFeel'>ovrBoundaryLookAndFeel</a></td>
+                           <td class='docblock-short'>
+                                <p>Boundary system look and feel</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.ovrBoundaryTestResult.html"
+                                  title='struct ovr_sys::ovrBoundaryTestResult'>ovrBoundaryTestResult</a></td>
+                           <td class='docblock-short'>
+                                <p>Provides boundary test information</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.ovrColorf.html"
+                                  title='struct ovr_sys::ovrColorf'>ovrColorf</a></td>
+                           <td class='docblock-short'>
+                                <p>A RGBA color with normalized <code>f32</code> components.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.ovrDetectResult.html"
+                                  title='struct ovr_sys::ovrDetectResult'>ovrDetectResult</a></td>
+                           <td class='docblock-short'>
+                                <p>Return values for <code>ovr_Detect</code>.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.ovrErrorInfo.html"
+                                  title='struct ovr_sys::ovrErrorInfo'>ovrErrorInfo</a></td>
+                           <td class='docblock-short'>
+                                <p>Provides information about the last error.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.ovrEyeRenderDesc.html"
+                                  title='struct ovr_sys::ovrEyeRenderDesc'>ovrEyeRenderDesc</a></td>
+                           <td class='docblock-short'>
+                                <p>Rendering information for each eye. Computed by  <code>ovr_GetRenderDesc()</code> based on the
+specified FOV. Note that the rendering viewport is not included
+here as it can be specified separately and modified per frame by
+passing different Viewport values in the layer structure.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.ovrFovPort.html"
+                                  title='struct ovr_sys::ovrFovPort'>ovrFovPort</a></td>
+                           <td class='docblock-short'>
+                                <p>Describes the up, down, left, and right angles of the field of view.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.ovrGraphicsLuid.html"
+                                  title='struct ovr_sys::ovrGraphicsLuid'>ovrGraphicsLuid</a></td>
+                           <td class='docblock-short'>
+                                <p>Identifies a graphics device in a platform-specific way.
+For Windows this is a LUID type.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.ovrHapticsBuffer.html"
+                                  title='struct ovr_sys::ovrHapticsBuffer'>ovrHapticsBuffer</a></td>
+                           <td class='docblock-short'>
+                                <p>Haptics buffer descriptor, contains amplitude samples used for Touch vibration</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.ovrHapticsPlaybackState.html"
+                                  title='struct ovr_sys::ovrHapticsPlaybackState'>ovrHapticsPlaybackState</a></td>
+                           <td class='docblock-short'>
+                                <p>State of the Haptics playback for Touch vibration</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.ovrHmdDesc.html"
+                                  title='struct ovr_sys::ovrHmdDesc'>ovrHmdDesc</a></td>
+                           <td class='docblock-short'>
+                                <p>This is a complete descriptor of the HMD.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.ovrInitParams.html"
+                                  title='struct ovr_sys::ovrInitParams'>ovrInitParams</a></td>
+                           <td class='docblock-short'>
+                                <p>Parameters for  <code>ovr_Initialize</code>.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.ovrInputState.html"
+                                  title='struct ovr_sys::ovrInputState'>ovrInputState</a></td>
+                           <td class='docblock-short'>
+                                <p><code>ovrInputState</code> describes the complete controller input state, including Oculus Touch,
+and XBox gamepad. If multiple inputs are connected and used at the same time,
+their inputs are combined.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.ovrLayerEyeFov.html"
+                                  title='struct ovr_sys::ovrLayerEyeFov'>ovrLayerEyeFov</a></td>
+                           <td class='docblock-short'>
+                                <p>Describes a layer that specifies a monoscopic or stereoscopic view.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.ovrLayerEyeMatrix.html"
+                                  title='struct ovr_sys::ovrLayerEyeMatrix'>ovrLayerEyeMatrix</a></td>
+                           <td class='docblock-short'>
+                                <p>Describes a layer that specifies a monoscopic or stereoscopic view.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.ovrLayerHeader.html"
+                                  title='struct ovr_sys::ovrLayerHeader'>ovrLayerHeader</a></td>
+                           <td class='docblock-short'>
+                                <p>Defines properties shared by all <code>ovrLayer</code> structs, such as <code>ovrLayerEyeFov</code>.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.ovrLayerQuad.html"
+                                  title='struct ovr_sys::ovrLayerQuad'>ovrLayerQuad</a></td>
+                           <td class='docblock-short'>
+                                <p>Describes a layer of Quad type, which is a single quad in world or viewer space.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.ovrMatrix4f.html"
+                                  title='struct ovr_sys::ovrMatrix4f'>ovrMatrix4f</a></td>
+                           <td class='docblock-short'>
+                                <p>A 4x4 matrix with <code>f32</code> elements.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.ovrMirrorTextureDesc.html"
+                                  title='struct ovr_sys::ovrMirrorTextureDesc'>ovrMirrorTextureDesc</a></td>
+                           <td class='docblock-short'>
+                                <p>Description used to create a mirror texture.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.ovrPerfStats.html"
+                                  title='struct ovr_sys::ovrPerfStats'>ovrPerfStats</a></td>
+                           <td class='docblock-short'>
+                                <p>This is a complete descriptor of the performance stats provided by the SDK</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.ovrPerfStatsPerCompositorFrame.html"
+                                  title='struct ovr_sys::ovrPerfStatsPerCompositorFrame'>ovrPerfStatsPerCompositorFrame</a></td>
+                           <td class='docblock-short'>
+                                <p>Contains the performance stats for a given SDK compositor frame</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.ovrPoseStatef.html"
+                                  title='struct ovr_sys::ovrPoseStatef'>ovrPoseStatef</a></td>
+                           <td class='docblock-short'>
+                                <p>A full pose (rigid body) configuration with first and second derivatives.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.ovrPosef.html"
+                                  title='struct ovr_sys::ovrPosef'>ovrPosef</a></td>
+                           <td class='docblock-short'>
+                                <p>Position and orientation together.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.ovrQuatf.html"
+                                  title='struct ovr_sys::ovrQuatf'>ovrQuatf</a></td>
+                           <td class='docblock-short'>
+                                <p>A quaternion rotation.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.ovrRecti.html"
+                                  title='struct ovr_sys::ovrRecti'>ovrRecti</a></td>
+                           <td class='docblock-short'>
+                                <p>A 2D rectangle with a position and size.
+All components are integers.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.ovrSessionStatus.html"
+                                  title='struct ovr_sys::ovrSessionStatus'>ovrSessionStatus</a></td>
+                           <td class='docblock-short'>
+                                <p>Specifies status information for the current session.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.ovrSizei.html"
+                                  title='struct ovr_sys::ovrSizei'>ovrSizei</a></td>
+                           <td class='docblock-short'>
+                                <p>A 2D size with integer components.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.ovrTextureSwapChainDesc.html"
+                                  title='struct ovr_sys::ovrTextureSwapChainDesc'>ovrTextureSwapChainDesc</a></td>
+                           <td class='docblock-short'>
+                                <p>Description used to create a texture swap chain.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.ovrTimewarpProjectionDesc.html"
+                                  title='struct ovr_sys::ovrTimewarpProjectionDesc'>ovrTimewarpProjectionDesc</a></td>
+                           <td class='docblock-short'>
+                                <p>Projection information for <code>ovrLayerEyeFovDepth</code>.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.ovrTouchHapticsDesc.html"
+                                  title='struct ovr_sys::ovrTouchHapticsDesc'>ovrTouchHapticsDesc</a></td>
+                           <td class='docblock-short'>
+                                <p>Describes the Touch Haptics engine.
+Currently, those values will NOT change during a session.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.ovrTrackerDesc.html"
+                                  title='struct ovr_sys::ovrTrackerDesc'>ovrTrackerDesc</a></td>
+                           <td class='docblock-short'>
+                                <p>Specifies the description of a single sensor.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.ovrTrackerPose.html"
+                                  title='struct ovr_sys::ovrTrackerPose'>ovrTrackerPose</a></td>
+                           <td class='docblock-short'>
+                                <p>Specifies the pose for a single sensor.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.ovrTrackingState.html"
+                                  title='struct ovr_sys::ovrTrackingState'>ovrTrackingState</a></td>
+                           <td class='docblock-short'>
+                                <p>Tracking state at a given absolute time (describes predicted HMD pose, etc.).
+Returned by  <code>ovr_GetTrackingState</code>.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.ovrVector2f.html"
+                                  title='struct ovr_sys::ovrVector2f'>ovrVector2f</a></td>
+                           <td class='docblock-short'>
+                                <p>A 2D vector with <code>f32</code> components.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.ovrVector2i.html"
+                                  title='struct ovr_sys::ovrVector2i'>ovrVector2i</a></td>
+                           <td class='docblock-short'>
+                                <p>A 2D vector with integer components.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.ovrVector3f.html"
+                                  title='struct ovr_sys::ovrVector3f'>ovrVector3f</a></td>
+                           <td class='docblock-short'>
+                                <p>A 3D vector with <code>f32</code> components.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.ovrViewScaleDesc.html"
+                                  title='struct ovr_sys::ovrViewScaleDesc'>ovrViewScaleDesc</a></td>
+                           <td class='docblock-short'>
+                                <p>Contains the data necessary to properly calculate position info for various layer types.</p>
+                           </td>
+                       </tr></table><h2 id='constants' class='section-header'><a href="#constants">Constants</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_BUILD_VERSION.html"
+                                  title='constant ovr_sys::OVR_BUILD_VERSION'>OVR_BUILD_VERSION</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_DEBUG_HUD_STEREO_GUIDE_COLOR.html"
+                                  title='constant ovr_sys::OVR_DEBUG_HUD_STEREO_GUIDE_COLOR'>OVR_DEBUG_HUD_STEREO_GUIDE_COLOR</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_DEBUG_HUD_STEREO_GUIDE_INFO_ENABLE.html"
+                                  title='constant ovr_sys::OVR_DEBUG_HUD_STEREO_GUIDE_INFO_ENABLE'>OVR_DEBUG_HUD_STEREO_GUIDE_INFO_ENABLE</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_DEBUG_HUD_STEREO_GUIDE_POSITION.html"
+                                  title='constant ovr_sys::OVR_DEBUG_HUD_STEREO_GUIDE_POSITION'>OVR_DEBUG_HUD_STEREO_GUIDE_POSITION</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_DEBUG_HUD_STEREO_GUIDE_SIZE.html"
+                                  title='constant ovr_sys::OVR_DEBUG_HUD_STEREO_GUIDE_SIZE'>OVR_DEBUG_HUD_STEREO_GUIDE_SIZE</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_DEBUG_HUD_STEREO_GUIDE_YAWPITCHROLL.html"
+                                  title='constant ovr_sys::OVR_DEBUG_HUD_STEREO_GUIDE_YAWPITCHROLL'>OVR_DEBUG_HUD_STEREO_GUIDE_YAWPITCHROLL</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_DEBUG_HUD_STEREO_MODE.html"
+                                  title='constant ovr_sys::OVR_DEBUG_HUD_STEREO_MODE'>OVR_DEBUG_HUD_STEREO_MODE</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_DEFAULT_EYE_HEIGHT.html"
+                                  title='constant ovr_sys::OVR_DEFAULT_EYE_HEIGHT'>OVR_DEFAULT_EYE_HEIGHT</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_DEFAULT_GENDER.html"
+                                  title='constant ovr_sys::OVR_DEFAULT_GENDER'>OVR_DEFAULT_GENDER</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_DEFAULT_NECK_TO_EYE_HORIZONTAL.html"
+                                  title='constant ovr_sys::OVR_DEFAULT_NECK_TO_EYE_HORIZONTAL'>OVR_DEFAULT_NECK_TO_EYE_HORIZONTAL</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_DEFAULT_NECK_TO_EYE_VERTICAL.html"
+                                  title='constant ovr_sys::OVR_DEFAULT_NECK_TO_EYE_VERTICAL'>OVR_DEFAULT_NECK_TO_EYE_VERTICAL</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_DEFAULT_PLAYER_HEIGHT.html"
+                                  title='constant ovr_sys::OVR_DEFAULT_PLAYER_HEIGHT'>OVR_DEFAULT_PLAYER_HEIGHT</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_FORMAT_B4G4R4A4_UNORM.html"
+                                  title='constant ovr_sys::OVR_FORMAT_B4G4R4A4_UNORM'>OVR_FORMAT_B4G4R4A4_UNORM</a></td>
+                           <td class='docblock-short'>
+                                <p>Not currently supported on PC. Would require a DirectX 11.1 device.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_FORMAT_B5G5R5A1_UNORM.html"
+                                  title='constant ovr_sys::OVR_FORMAT_B5G5R5A1_UNORM'>OVR_FORMAT_B5G5R5A1_UNORM</a></td>
+                           <td class='docblock-short'>
+                                <p>Not currently supported on PC. Would require a DirectX 11.1 device.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_FORMAT_B5G6R5_UNORM.html"
+                                  title='constant ovr_sys::OVR_FORMAT_B5G6R5_UNORM'>OVR_FORMAT_B5G6R5_UNORM</a></td>
+                           <td class='docblock-short'>
+                                <p>Not currently supported on PC. Would require a DirectX 11.1 device.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_FORMAT_B8G8R8A8_UNORM.html"
+                                  title='constant ovr_sys::OVR_FORMAT_B8G8R8A8_UNORM'>OVR_FORMAT_B8G8R8A8_UNORM</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_FORMAT_B8G8R8A8_UNORM_SRGB.html"
+                                  title='constant ovr_sys::OVR_FORMAT_B8G8R8A8_UNORM_SRGB'>OVR_FORMAT_B8G8R8A8_UNORM_SRGB</a></td>
+                           <td class='docblock-short'>
+                                <p>Not supported for OpenGL applications</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_FORMAT_B8G8R8X8_UNORM.html"
+                                  title='constant ovr_sys::OVR_FORMAT_B8G8R8X8_UNORM'>OVR_FORMAT_B8G8R8X8_UNORM</a></td>
+                           <td class='docblock-short'>
+                                <p>Not supported for OpenGL applications</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_FORMAT_B8G8R8X8_UNORM_SRGB.html"
+                                  title='constant ovr_sys::OVR_FORMAT_B8G8R8X8_UNORM_SRGB'>OVR_FORMAT_B8G8R8X8_UNORM_SRGB</a></td>
+                           <td class='docblock-short'>
+                                <p>Not supported for OpenGL applications</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_FORMAT_BC1_UNORM.html"
+                                  title='constant ovr_sys::OVR_FORMAT_BC1_UNORM'>OVR_FORMAT_BC1_UNORM</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_FORMAT_BC1_UNORM_SRGB.html"
+                                  title='constant ovr_sys::OVR_FORMAT_BC1_UNORM_SRGB'>OVR_FORMAT_BC1_UNORM_SRGB</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_FORMAT_BC2_UNORM.html"
+                                  title='constant ovr_sys::OVR_FORMAT_BC2_UNORM'>OVR_FORMAT_BC2_UNORM</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_FORMAT_BC2_UNORM_SRGB.html"
+                                  title='constant ovr_sys::OVR_FORMAT_BC2_UNORM_SRGB'>OVR_FORMAT_BC2_UNORM_SRGB</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_FORMAT_BC3_UNORM.html"
+                                  title='constant ovr_sys::OVR_FORMAT_BC3_UNORM'>OVR_FORMAT_BC3_UNORM</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_FORMAT_BC3_UNORM_SRGB.html"
+                                  title='constant ovr_sys::OVR_FORMAT_BC3_UNORM_SRGB'>OVR_FORMAT_BC3_UNORM_SRGB</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_FORMAT_BC6H_SF16.html"
+                                  title='constant ovr_sys::OVR_FORMAT_BC6H_SF16'>OVR_FORMAT_BC6H_SF16</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_FORMAT_BC6H_UF16.html"
+                                  title='constant ovr_sys::OVR_FORMAT_BC6H_UF16'>OVR_FORMAT_BC6H_UF16</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_FORMAT_BC7_UNORM.html"
+                                  title='constant ovr_sys::OVR_FORMAT_BC7_UNORM'>OVR_FORMAT_BC7_UNORM</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_FORMAT_BC7_UNORM_SRGB.html"
+                                  title='constant ovr_sys::OVR_FORMAT_BC7_UNORM_SRGB'>OVR_FORMAT_BC7_UNORM_SRGB</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_FORMAT_D16_UNORM.html"
+                                  title='constant ovr_sys::OVR_FORMAT_D16_UNORM'>OVR_FORMAT_D16_UNORM</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_FORMAT_D24_UNORM_S8_UINT.html"
+                                  title='constant ovr_sys::OVR_FORMAT_D24_UNORM_S8_UINT'>OVR_FORMAT_D24_UNORM_S8_UINT</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_FORMAT_D32_FLOAT.html"
+                                  title='constant ovr_sys::OVR_FORMAT_D32_FLOAT'>OVR_FORMAT_D32_FLOAT</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_FORMAT_D32_FLOAT_S8X24_UINT.html"
+                                  title='constant ovr_sys::OVR_FORMAT_D32_FLOAT_S8X24_UINT'>OVR_FORMAT_D32_FLOAT_S8X24_UINT</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_FORMAT_R11G11B10_FLOAT.html"
+                                  title='constant ovr_sys::OVR_FORMAT_R11G11B10_FLOAT'>OVR_FORMAT_R11G11B10_FLOAT</a></td>
+                           <td class='docblock-short'>
+                                <p>Introduced in v1.10</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_FORMAT_R16G16B16A16_FLOAT.html"
+                                  title='constant ovr_sys::OVR_FORMAT_R16G16B16A16_FLOAT'>OVR_FORMAT_R16G16B16A16_FLOAT</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_FORMAT_R8G8B8A8_UNORM.html"
+                                  title='constant ovr_sys::OVR_FORMAT_R8G8B8A8_UNORM'>OVR_FORMAT_R8G8B8A8_UNORM</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_FORMAT_R8G8B8A8_UNORM_SRGB.html"
+                                  title='constant ovr_sys::OVR_FORMAT_R8G8B8A8_UNORM_SRGB'>OVR_FORMAT_R8G8B8A8_UNORM_SRGB</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_FORMAT_UNKNOWN.html"
+                                  title='constant ovr_sys::OVR_FORMAT_UNKNOWN'>OVR_FORMAT_UNKNOWN</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_KEY_EYE_HEIGHT.html"
+                                  title='constant ovr_sys::OVR_KEY_EYE_HEIGHT'>OVR_KEY_EYE_HEIGHT</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_KEY_EYE_TO_NOSE_DISTANCE.html"
+                                  title='constant ovr_sys::OVR_KEY_EYE_TO_NOSE_DISTANCE'>OVR_KEY_EYE_TO_NOSE_DISTANCE</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_KEY_GENDER.html"
+                                  title='constant ovr_sys::OVR_KEY_GENDER'>OVR_KEY_GENDER</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_KEY_NAME.html"
+                                  title='constant ovr_sys::OVR_KEY_NAME'>OVR_KEY_NAME</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_KEY_NECK_TO_EYE_DISTANCE.html"
+                                  title='constant ovr_sys::OVR_KEY_NECK_TO_EYE_DISTANCE'>OVR_KEY_NECK_TO_EYE_DISTANCE</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_KEY_PLAYER_HEIGHT.html"
+                                  title='constant ovr_sys::OVR_KEY_PLAYER_HEIGHT'>OVR_KEY_PLAYER_HEIGHT</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_KEY_USER.html"
+                                  title='constant ovr_sys::OVR_KEY_USER'>OVR_KEY_USER</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_LAYER_HUD_CURRENT_LAYER.html"
+                                  title='constant ovr_sys::OVR_LAYER_HUD_CURRENT_LAYER'>OVR_LAYER_HUD_CURRENT_LAYER</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_LAYER_HUD_MODE.html"
+                                  title='constant ovr_sys::OVR_LAYER_HUD_MODE'>OVR_LAYER_HUD_MODE</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_LAYER_HUD_SHOW_ALL_LAYERS.html"
+                                  title='constant ovr_sys::OVR_LAYER_HUD_SHOW_ALL_LAYERS'>OVR_LAYER_HUD_SHOW_ALL_LAYERS</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_MAJOR_VERSION.html"
+                                  title='constant ovr_sys::OVR_MAJOR_VERSION'>OVR_MAJOR_VERSION</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_MINOR_VERSION.html"
+                                  title='constant ovr_sys::OVR_MINOR_VERSION'>OVR_MINOR_VERSION</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_PERF_HUD_MODE.html"
+                                  title='constant ovr_sys::OVR_PERF_HUD_MODE'>OVR_PERF_HUD_MODE</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.OVR_PRODUCT_VERSION.html"
+                                  title='constant ovr_sys::OVR_PRODUCT_VERSION'>OVR_PRODUCT_VERSION</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrBoundary_Outer.html"
+                                  title='constant ovr_sys::ovrBoundary_Outer'>ovrBoundary_Outer</a></td>
+                           <td class='docblock-short'>
+                                <p>Outer boundary - closely represents user setup walls</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrBoundary_PlayArea.html"
+                                  title='constant ovr_sys::ovrBoundary_PlayArea'>ovrBoundary_PlayArea</a></td>
+                           <td class='docblock-short'>
+                                <p>Play area - safe rectangular area inside outer boundary which can optionally be used to restrict user interactions and motion.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrButton_A.html"
+                                  title='constant ovr_sys::ovrButton_A'>ovrButton_A</a></td>
+                           <td class='docblock-short'>
+                                <p>A button on XBox controllers and right Touch controller. Select button on Oculus Remote.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrButton_B.html"
+                                  title='constant ovr_sys::ovrButton_B'>ovrButton_B</a></td>
+                           <td class='docblock-short'>
+                                <p>B button on XBox controllers and right Touch controller. Back button on Oculus Remote.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrButton_Back.html"
+                                  title='constant ovr_sys::ovrButton_Back'>ovrButton_Back</a></td>
+                           <td class='docblock-short'>
+                                <p>Back on Xbox 360 controller. View button on XBox One controller. Not present on Touch controllers or Oculus Remote.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrButton_Down.html"
+                                  title='constant ovr_sys::ovrButton_Down'>ovrButton_Down</a></td>
+                           <td class='docblock-short'>
+                                <p>Down button on XBox controllers and Oculus Remote. Not present on Touch controllers.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrButton_Enter.html"
+                                  title='constant ovr_sys::ovrButton_Enter'>ovrButton_Enter</a></td>
+                           <td class='docblock-short'>
+                                <p>Start on XBox 360 controller. Menu on XBox One controller and Left Touch controller. Should be referred to as the Menu button in user-facing documentation.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrButton_Home.html"
+                                  title='constant ovr_sys::ovrButton_Home'>ovrButton_Home</a></td>
+                           <td class='docblock-short'>
+                                <p>Home button on XBox controllers. Oculus button on Touch controllers and Oculus Remote.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrButton_LMask.html"
+                                  title='constant ovr_sys::ovrButton_LMask'>ovrButton_LMask</a></td>
+                           <td class='docblock-short'>
+                                <p>Bit mask of all buttons on the left Touch controller</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrButton_LShoulder.html"
+                                  title='constant ovr_sys::ovrButton_LShoulder'>ovrButton_LShoulder</a></td>
+                           <td class='docblock-short'>
+                                <p>Left shoulder button on XBox controllers. Not present on Touch controllers or Oculus Remote.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrButton_LThumb.html"
+                                  title='constant ovr_sys::ovrButton_LThumb'>ovrButton_LThumb</a></td>
+                           <td class='docblock-short'>
+                                <p>Left thumbstick on XBox controllers and Touch controllers. Not present on Oculus Remote.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrButton_Left.html"
+                                  title='constant ovr_sys::ovrButton_Left'>ovrButton_Left</a></td>
+                           <td class='docblock-short'>
+                                <p>Left button on XBox controllers and Oculus Remote. Not present on Touch controllers.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrButton_Private.html"
+                                  title='constant ovr_sys::ovrButton_Private'>ovrButton_Private</a></td>
+                           <td class='docblock-short'>
+                                <p>Bit mask of all buttons that are for private usage by Oculus</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrButton_RMask.html"
+                                  title='constant ovr_sys::ovrButton_RMask'>ovrButton_RMask</a></td>
+                           <td class='docblock-short'>
+                                <p>Bit mask of all buttons on the right Touch controller</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrButton_RShoulder.html"
+                                  title='constant ovr_sys::ovrButton_RShoulder'>ovrButton_RShoulder</a></td>
+                           <td class='docblock-short'>
+                                <p>Right shoulder button on XBox controllers. Not present on Touch controllers or Oculus Remote.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrButton_RThumb.html"
+                                  title='constant ovr_sys::ovrButton_RThumb'>ovrButton_RThumb</a></td>
+                           <td class='docblock-short'>
+                                <p>Right thumbstick on XBox controllers and Touch controllers. Not present on Oculus Remote.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrButton_Right.html"
+                                  title='constant ovr_sys::ovrButton_Right'>ovrButton_Right</a></td>
+                           <td class='docblock-short'>
+                                <p>Right button on XBox controllers and Oculus Remote. Not present on Touch controllers.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrButton_Up.html"
+                                  title='constant ovr_sys::ovrButton_Up'>ovrButton_Up</a></td>
+                           <td class='docblock-short'>
+                                <p>Up button on XBox controllers and Oculus Remote. Not present on Touch controllers.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrButton_VolDown.html"
+                                  title='constant ovr_sys::ovrButton_VolDown'>ovrButton_VolDown</a></td>
+                           <td class='docblock-short'>
+                                <p>Volume button on Oculus Remote. Not present on XBox or Touch controllers.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrButton_VolUp.html"
+                                  title='constant ovr_sys::ovrButton_VolUp'>ovrButton_VolUp</a></td>
+                           <td class='docblock-short'>
+                                <p>Volume button on Oculus Remote. Not present on XBox or Touch controllers.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrButton_X.html"
+                                  title='constant ovr_sys::ovrButton_X'>ovrButton_X</a></td>
+                           <td class='docblock-short'>
+                                <p>X button on XBox controllers and left Touch controller. Not present on Oculus Remote.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrButton_Y.html"
+                                  title='constant ovr_sys::ovrButton_Y'>ovrButton_Y</a></td>
+                           <td class='docblock-short'>
+                                <p>Y button on XBox controllers and left Touch controller. Not present on Oculus Remote.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrControllerType_Active.html"
+                                  title='constant ovr_sys::ovrControllerType_Active'>ovrControllerType_Active</a></td>
+                           <td class='docblock-short'>
+                                <p>Operate on or query whichever controller is active.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrControllerType_LTouch.html"
+                                  title='constant ovr_sys::ovrControllerType_LTouch'>ovrControllerType_LTouch</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrControllerType_None.html"
+                                  title='constant ovr_sys::ovrControllerType_None'>ovrControllerType_None</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrControllerType_RTouch.html"
+                                  title='constant ovr_sys::ovrControllerType_RTouch'>ovrControllerType_RTouch</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrControllerType_Remote.html"
+                                  title='constant ovr_sys::ovrControllerType_Remote'>ovrControllerType_Remote</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrControllerType_Touch.html"
+                                  title='constant ovr_sys::ovrControllerType_Touch'>ovrControllerType_Touch</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrControllerType_XBox.html"
+                                  title='constant ovr_sys::ovrControllerType_XBox'>ovrControllerType_XBox</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrDebugHudStereo_CrosshairAtInfinity.html"
+                                  title='constant ovr_sys::ovrDebugHudStereo_CrosshairAtInfinity'>ovrDebugHudStereo_CrosshairAtInfinity</a></td>
+                           <td class='docblock-short'>
+                                <p>Renders screen-space crosshair at infinity for Stereo Debugging</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrDebugHudStereo_Off.html"
+                                  title='constant ovr_sys::ovrDebugHudStereo_Off'>ovrDebugHudStereo_Off</a></td>
+                           <td class='docblock-short'>
+                                <p>Turns off the Stereo Debug HUD</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrDebugHudStereo_Quad.html"
+                                  title='constant ovr_sys::ovrDebugHudStereo_Quad'>ovrDebugHudStereo_Quad</a></td>
+                           <td class='docblock-short'>
+                                <p>Renders Quad in world for Stereo Debugging</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrDebugHudStereo_QuadWithCrosshair.html"
+                                  title='constant ovr_sys::ovrDebugHudStereo_QuadWithCrosshair'>ovrDebugHudStereo_QuadWithCrosshair</a></td>
+                           <td class='docblock-short'>
+                                <p>Renders Quad+crosshair in world for Stereo Debugging</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_ApplicationInvisible.html"
+                                  title='constant ovr_sys::ovrError_ApplicationInvisible'>ovrError_ApplicationInvisible</a></td>
+                           <td class='docblock-short'>
+                                <p>Application declared itself as an invisible type and is not allowed to submit frames.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_AudioComError.html"
+                                  title='constant ovr_sys::ovrError_AudioComError'>ovrError_AudioComError</a></td>
+                           <td class='docblock-short'>
+                                <p>Generic COM error.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_AudioDeviceNotFound.html"
+                                  title='constant ovr_sys::ovrError_AudioDeviceNotFound'>ovrError_AudioDeviceNotFound</a></td>
+                           <td class='docblock-short'>
+                                <p>Failure to find the specified audio device.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_ClientSkippedDestroy.html"
+                                  title='constant ovr_sys::ovrError_ClientSkippedDestroy'>ovrError_ClientSkippedDestroy</a></td>
+                           <td class='docblock-short'>
+                                <p>The client failed to call <code>ovr_Destroy</code> on an active session before calling  <code>ovr_Shutdown</code>. Or the client crashed.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_ClientSkippedShutdown.html"
+                                  title='constant ovr_sys::ovrError_ClientSkippedShutdown'>ovrError_ClientSkippedShutdown</a></td>
+                           <td class='docblock-short'>
+                                <p>The client failed to call  <code>ovr_Shutdown</code> or the client crashed.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_ClientVersion.html"
+                                  title='constant ovr_sys::ovrError_ClientVersion'>ovrError_ClientVersion</a></td>
+                           <td class='docblock-short'>
+                                <p>Client version too old to connect to service</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_ContentProtectionNotAvailable.html"
+                                  title='constant ovr_sys::ovrError_ContentProtectionNotAvailable'>ovrError_ContentProtectionNotAvailable</a></td>
+                           <td class='docblock-short'>
+                                <p>Content protection is not available for the display</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_DeviceUnavailable.html"
+                                  title='constant ovr_sys::ovrError_DeviceUnavailable'>ovrError_DeviceUnavailable</a></td>
+                           <td class='docblock-short'>
+                                <p>Specified device type isn&#39;t available.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_DisabledOrDefaultAdapter.html"
+                                  title='constant ovr_sys::ovrError_DisabledOrDefaultAdapter'>ovrError_DisabledOrDefaultAdapter</a></td>
+                           <td class='docblock-short'>
+                                <p>No supported VR display system found, but disabled or driverless adapter found.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_Disallowed.html"
+                                  title='constant ovr_sys::ovrError_Disallowed'>ovrError_Disallowed</a></td>
+                           <td class='docblock-short'>
+                                <p>The given request is disallowed under the current conditions.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_DisplayInit.html"
+                                  title='constant ovr_sys::ovrError_DisplayInit'>ovrError_DisplayInit</a></td>
+                           <td class='docblock-short'>
+                                <p>Unable to initialize the HMD display.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_DisplayLost.html"
+                                  title='constant ovr_sys::ovrError_DisplayLost'>ovrError_DisplayLost</a></td>
+                           <td class='docblock-short'>
+                                <p>In the event of a system-wide graphics reset or cable unplug this is returned to the app.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_DisplayManagerInit.html"
+                                  title='constant ovr_sys::ovrError_DisplayManagerInit'>ovrError_DisplayManagerInit</a></td>
+                           <td class='docblock-short'>
+                                <p>Initialization of the DisplayManager failed.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_DisplayPluggedIncorrectly.html"
+                                  title='constant ovr_sys::ovrError_DisplayPluggedIncorrectly'>ovrError_DisplayPluggedIncorrectly</a></td>
+                           <td class='docblock-short'>
+                                <p>Display portion of HMD is plugged into an incompatible port (ex: IGP)</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_DisplayRemoved.html"
+                                  title='constant ovr_sys::ovrError_DisplayRemoved'>ovrError_DisplayRemoved</a></td>
+                           <td class='docblock-short'>
+                                <p>HMD removed from the display adapter</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_GraphicsDeviceReset.html"
+                                  title='constant ovr_sys::ovrError_GraphicsDeviceReset'>ovrError_GraphicsDeviceReset</a></td>
+                           <td class='docblock-short'>
+                                <p>Graphics device has been reset (TDR, etc...)</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_HybridGraphicsNotSupported.html"
+                                  title='constant ovr_sys::ovrError_HybridGraphicsNotSupported'>ovrError_HybridGraphicsNotSupported</a></td>
+                           <td class='docblock-short'>
+                                <p>The system is using hybrid graphics (Optimus, etc...), which is not support.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_IncompatibleGPU.html"
+                                  title='constant ovr_sys::ovrError_IncompatibleGPU'>ovrError_IncompatibleGPU</a></td>
+                           <td class='docblock-short'>
+                                <p>The graphics hardware is not supported</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_IncompatibleOS.html"
+                                  title='constant ovr_sys::ovrError_IncompatibleOS'>ovrError_IncompatibleOS</a></td>
+                           <td class='docblock-short'>
+                                <p>The operating system version is incompatible.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_Initialize.html"
+                                  title='constant ovr_sys::ovrError_Initialize'>ovrError_Initialize</a></td>
+                           <td class='docblock-short'>
+                                <p>Generic initialization error.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_InvalidHeadsetOrientation.html"
+                                  title='constant ovr_sys::ovrError_InvalidHeadsetOrientation'>ovrError_InvalidHeadsetOrientation</a></td>
+                           <td class='docblock-short'>
+                                <p>The headset was in an invalid orientation for the requested operation (e.g. vertically oriented during  <code>ovr_RecenterPose</code>).</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_InvalidOperation.html"
+                                  title='constant ovr_sys::ovrError_InvalidOperation'>ovrError_InvalidOperation</a></td>
+                           <td class='docblock-short'>
+                                <p>Function call is invalid for object&#39;s current state</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_InvalidParameter.html"
+                                  title='constant ovr_sys::ovrError_InvalidParameter'>ovrError_InvalidParameter</a></td>
+                           <td class='docblock-short'>
+                                <p>Invalid parameter provided. See error info or log for details.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_InvalidSession.html"
+                                  title='constant ovr_sys::ovrError_InvalidSession'>ovrError_InvalidSession</a></td>
+                           <td class='docblock-short'>
+                                <p>Invalid <code>ovrSession</code> parameter provided.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_LeakingResources.html"
+                                  title='constant ovr_sys::ovrError_LeakingResources'>ovrError_LeakingResources</a></td>
+                           <td class='docblock-short'>
+                                <p>Calling application has leaked resources</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_LibLoad.html"
+                                  title='constant ovr_sys::ovrError_LibLoad'>ovrError_LibLoad</a></td>
+                           <td class='docblock-short'>
+                                <p>Couldn&#39;t load LibOVRRT.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_LibPath.html"
+                                  title='constant ovr_sys::ovrError_LibPath'>ovrError_LibPath</a></td>
+                           <td class='docblock-short'>
+                                <p>LibOVRRT path failure.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_LibSignCheck.html"
+                                  title='constant ovr_sys::ovrError_LibSignCheck'>ovrError_LibSignCheck</a></td>
+                           <td class='docblock-short'>
+                                <p>LibOVRRT signature check failure.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_LibSymbols.html"
+                                  title='constant ovr_sys::ovrError_LibSymbols'>ovrError_LibSymbols</a></td>
+                           <td class='docblock-short'>
+                                <p>LibOVRRT symbol resolution failure.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_LibVersion.html"
+                                  title='constant ovr_sys::ovrError_LibVersion'>ovrError_LibVersion</a></td>
+                           <td class='docblock-short'>
+                                <p>LibOVRRT version incompatibility.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_MemoryAllocationFailure.html"
+                                  title='constant ovr_sys::ovrError_MemoryAllocationFailure'>ovrError_MemoryAllocationFailure</a></td>
+                           <td class='docblock-short'>
+                                <p>Failure to allocate memory.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_MisformattedBlock.html"
+                                  title='constant ovr_sys::ovrError_MisformattedBlock'>ovrError_MisformattedBlock</a></td>
+                           <td class='docblock-short'>
+                                <p>Result of a bad calibration block due to lengths</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_MismatchedAdapters.html"
+                                  title='constant ovr_sys::ovrError_MismatchedAdapters'>ovrError_MismatchedAdapters</a></td>
+                           <td class='docblock-short'>
+                                <p>Chosen rendering adapters between client and service do not match</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_NoCalibration.html"
+                                  title='constant ovr_sys::ovrError_NoCalibration'>ovrError_NoCalibration</a></td>
+                           <td class='docblock-short'>
+                                <p>Result of a missing calibration block</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_NoHmd.html"
+                                  title='constant ovr_sys::ovrError_NoHmd'>ovrError_NoHmd</a></td>
+                           <td class='docblock-short'>
+                                <p>The given HMD doesn&#39;t exist.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_NoValidVRDisplaySystem.html"
+                                  title='constant ovr_sys::ovrError_NoValidVRDisplaySystem'>ovrError_NoValidVRDisplaySystem</a></td>
+                           <td class='docblock-short'>
+                                <p>No valid VR display system found.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_NotInitialized.html"
+                                  title='constant ovr_sys::ovrError_NotInitialized'>ovrError_NotInitialized</a></td>
+                           <td class='docblock-short'>
+                                <p>The system or component has not been initialized.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_Obsolete.html"
+                                  title='constant ovr_sys::ovrError_Obsolete'>ovrError_Obsolete</a></td>
+                           <td class='docblock-short'>
+                                <p>Feature or API is obsolete and no longer supported.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_OldVersion.html"
+                                  title='constant ovr_sys::ovrError_OldVersion'>ovrError_OldVersion</a></td>
+                           <td class='docblock-short'>
+                                <p>Result of an old calibration block</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_OutOfDateGfxDriver.html"
+                                  title='constant ovr_sys::ovrError_OutOfDateGfxDriver'>ovrError_OutOfDateGfxDriver</a></td>
+                           <td class='docblock-short'>
+                                <p>The graphics driver is out of date.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_OutOfDateOS.html"
+                                  title='constant ovr_sys::ovrError_OutOfDateOS'>ovrError_OutOfDateOS</a></td>
+                           <td class='docblock-short'>
+                                <p>The operating system is out of date.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_Reinitialization.html"
+                                  title='constant ovr_sys::ovrError_Reinitialization'>ovrError_Reinitialization</a></td>
+                           <td class='docblock-short'>
+                                <p>Attempting to re-initialize with a different version.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_RemoteSession.html"
+                                  title='constant ovr_sys::ovrError_RemoteSession'>ovrError_RemoteSession</a></td>
+                           <td class='docblock-short'>
+                                <p>Failed to connect to the service because remote connections to the service are not allowed.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_RuntimeException.html"
+                                  title='constant ovr_sys::ovrError_RuntimeException'>ovrError_RuntimeException</a></td>
+                           <td class='docblock-short'>
+                                <p>A runtime exception occurred. The application is required to shutdown LibOVR and re-initialize it before this error state will be cleared.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_ServerStart.html"
+                                  title='constant ovr_sys::ovrError_ServerStart'>ovrError_ServerStart</a></td>
+                           <td class='docblock-short'>
+                                <p>Unable to start the server. Is it already running?</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_ServiceConnection.html"
+                                  title='constant ovr_sys::ovrError_ServiceConnection'>ovrError_ServiceConnection</a></td>
+                           <td class='docblock-short'>
+                                <p>Couldn&#39;t connect to the OVR Service.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_ServiceDeadlockDetected.html"
+                                  title='constant ovr_sys::ovrError_ServiceDeadlockDetected'>ovrError_ServiceDeadlockDetected</a></td>
+                           <td class='docblock-short'>
+                                <p>The service watchdog discovered a deadlock.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_ServiceError.html"
+                                  title='constant ovr_sys::ovrError_ServiceError'>ovrError_ServiceError</a></td>
+                           <td class='docblock-short'>
+                                <p>Generic service error. See error info or log for details.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_ServiceVersion.html"
+                                  title='constant ovr_sys::ovrError_ServiceVersion'>ovrError_ServiceVersion</a></td>
+                           <td class='docblock-short'>
+                                <p>OVR Service version incompatibility.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_TextureSwapChainFull.html"
+                                  title='constant ovr_sys::ovrError_TextureSwapChainFull'>ovrError_TextureSwapChainFull</a></td>
+                           <td class='docblock-short'>
+                                <p><code>ovr_CommitTextureSwapChain</code> was called too many times on a texture swapchain without calling submit to use the chain.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_TextureSwapChainInvalid.html"
+                                  title='constant ovr_sys::ovrError_TextureSwapChainInvalid'>ovrError_TextureSwapChainInvalid</a></td>
+                           <td class='docblock-short'>
+                                <p>The <code>ovrTextureSwapChain</code> is in an incomplete or inconsistent state. Ensure  <code>ovr_CommitTextureSwapChain</code> was called at least once first.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_Timeout.html"
+                                  title='constant ovr_sys::ovrError_Timeout'>ovrError_Timeout</a></td>
+                           <td class='docblock-short'>
+                                <p>The operation timed out.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_TrackerDriverInit.html"
+                                  title='constant ovr_sys::ovrError_TrackerDriverInit'>ovrError_TrackerDriverInit</a></td>
+                           <td class='docblock-short'>
+                                <p>Failed to get the interface for an attached tracker</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrError_Unsupported.html"
+                                  title='constant ovr_sys::ovrError_Unsupported'>ovrError_Unsupported</a></td>
+                           <td class='docblock-short'>
+                                <p>Function call is not supported on this hardware/software</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrEye_Count.html"
+                                  title='constant ovr_sys::ovrEye_Count'>ovrEye_Count</a></td>
+                           <td class='docblock-short'>
+                                <p>\internal Count of enumerated elements.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrEye_Left.html"
+                                  title='constant ovr_sys::ovrEye_Left'>ovrEye_Left</a></td>
+                           <td class='docblock-short'>
+                                <p>The left eye, from the viewer&#39;s perspective.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrEye_Right.html"
+                                  title='constant ovr_sys::ovrEye_Right'>ovrEye_Right</a></td>
+                           <td class='docblock-short'>
+                                <p>The right eye, from the viewer&#39;s perspective.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrFalse.html"
+                                  title='constant ovr_sys::ovrFalse'>ovrFalse</a></td>
+                           <td class='docblock-short'>
+                                <p><code>ovrBool</code> value of false.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrHand_Count.html"
+                                  title='constant ovr_sys::ovrHand_Count'>ovrHand_Count</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrHand_Left.html"
+                                  title='constant ovr_sys::ovrHand_Left'>ovrHand_Left</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrHand_Right.html"
+                                  title='constant ovr_sys::ovrHand_Right'>ovrHand_Right</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrHapticsBufferSubmit_Enqueue.html"
+                                  title='constant ovr_sys::ovrHapticsBufferSubmit_Enqueue'>ovrHapticsBufferSubmit_Enqueue</a></td>
+                           <td class='docblock-short'>
+                                <p>Enqueue buffer for later playback</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrHmdCap_DebugDevice.html"
+                                  title='constant ovr_sys::ovrHmdCap_DebugDevice'>ovrHmdCap_DebugDevice</a></td>
+                           <td class='docblock-short'>
+                                <p><B>(read only)</B> Specifies that the HMD is a virtual debug device.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrHmd_CB.html"
+                                  title='constant ovr_sys::ovrHmd_CB'>ovrHmd_CB</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrHmd_CV1.html"
+                                  title='constant ovr_sys::ovrHmd_CV1'>ovrHmd_CV1</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrHmd_DK1.html"
+                                  title='constant ovr_sys::ovrHmd_DK1'>ovrHmd_DK1</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrHmd_DK2.html"
+                                  title='constant ovr_sys::ovrHmd_DK2'>ovrHmd_DK2</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrHmd_DKHD.html"
+                                  title='constant ovr_sys::ovrHmd_DKHD'>ovrHmd_DKHD</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrHmd_E3_2015.html"
+                                  title='constant ovr_sys::ovrHmd_E3_2015'>ovrHmd_E3_2015</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrHmd_ES06.html"
+                                  title='constant ovr_sys::ovrHmd_ES06'>ovrHmd_ES06</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrHmd_ES09.html"
+                                  title='constant ovr_sys::ovrHmd_ES09'>ovrHmd_ES09</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrHmd_ES11.html"
+                                  title='constant ovr_sys::ovrHmd_ES11'>ovrHmd_ES11</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrHmd_None.html"
+                                  title='constant ovr_sys::ovrHmd_None'>ovrHmd_None</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrHmd_Other.html"
+                                  title='constant ovr_sys::ovrHmd_Other'>ovrHmd_Other</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrInit_Debug.html"
+                                  title='constant ovr_sys::ovrInit_Debug'>ovrInit_Debug</a></td>
+                           <td class='docblock-short'>
+                                <p>When a debug library is requested, a slower debugging version of the library will
+run which can be used to help solve problems in the library and debug application code.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrInit_RequestVersion.html"
+                                  title='constant ovr_sys::ovrInit_RequestVersion'>ovrInit_RequestVersion</a></td>
+                           <td class='docblock-short'>
+                                <p>When a version is requested, the LibOVR runtime respects the RequestedMinorVersion
+field and verifies that the RequestedMinorVersion is supported. Normally when you
+specify this flag you simply use  <code>OVR_MINOR_VERSION</code> for <code>ovrInitParams</code>::RequestedMinorVersion,
+though you could use a lower version than  <code>OVR_MINOR_VERSION</code> to specify previous
+version behavior.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrLayerFlag_HeadLocked.html"
+                                  title='constant ovr_sys::ovrLayerFlag_HeadLocked'>ovrLayerFlag_HeadLocked</a></td>
+                           <td class='docblock-short'>
+                                <p>Mark this surface as &quot;headlocked&quot;, which means it is specified
+relative to the HMD and moves with it, rather than being specified
+relative to sensor/torso space and remaining still while the head moves.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrLayerFlag_HighQuality.html"
+                                  title='constant ovr_sys::ovrLayerFlag_HighQuality'>ovrLayerFlag_HighQuality</a></td>
+                           <td class='docblock-short'>
+                                <p><code>ovrLayerFlag_HighQuality</code> enables 4x anisotropic sampling during the composition of the layer.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrLayerFlag_TextureOriginAtBottomLeft.html"
+                                  title='constant ovr_sys::ovrLayerFlag_TextureOriginAtBottomLeft'>ovrLayerFlag_TextureOriginAtBottomLeft</a></td>
+                           <td class='docblock-short'>
+                                <p><code>ovrLayerFlag_TextureOriginAtBottomLeft</code>: the opposite is TopLeft.
+Generally this is false for D3D, true for OpenGL.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrLayerHud_Info.html"
+                                  title='constant ovr_sys::ovrLayerHud_Info'>ovrLayerHud_Info</a></td>
+                           <td class='docblock-short'>
+                                <p>Shows info about a specific layer</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrLayerHud_Off.html"
+                                  title='constant ovr_sys::ovrLayerHud_Off'>ovrLayerHud_Off</a></td>
+                           <td class='docblock-short'>
+                                <p>Turns off the layer HUD</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrLayerType_Disabled.html"
+                                  title='constant ovr_sys::ovrLayerType_Disabled'>ovrLayerType_Disabled</a></td>
+                           <td class='docblock-short'>
+                                <p>Layer is disabled.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrLayerType_EyeFov.html"
+                                  title='constant ovr_sys::ovrLayerType_EyeFov'>ovrLayerType_EyeFov</a></td>
+                           <td class='docblock-short'>
+                                <p>Described by <code>ovrLayerEyeFov</code>.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrLayerType_EyeMatrix.html"
+                                  title='constant ovr_sys::ovrLayerType_EyeMatrix'>ovrLayerType_EyeMatrix</a></td>
+                           <td class='docblock-short'>
+                                <p>Described by <code>ovrLayerEyeMatrix</code>.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrLayerType_Quad.html"
+                                  title='constant ovr_sys::ovrLayerType_Quad'>ovrLayerType_Quad</a></td>
+                           <td class='docblock-short'>
+                                <p>Described by <code>ovrLayerQuad</code>. Previously called <code>ovrLayerType_QuadInWorld</code>.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrLogLevel_Debug.html"
+                                  title='constant ovr_sys::ovrLogLevel_Debug'>ovrLogLevel_Debug</a></td>
+                           <td class='docblock-short'>
+                                <p>Debug-level log event.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrLogLevel_Error.html"
+                                  title='constant ovr_sys::ovrLogLevel_Error'>ovrLogLevel_Error</a></td>
+                           <td class='docblock-short'>
+                                <p>Error-level log event.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrLogLevel_Info.html"
+                                  title='constant ovr_sys::ovrLogLevel_Info'>ovrLogLevel_Info</a></td>
+                           <td class='docblock-short'>
+                                <p>Info-level log event.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrMaxLayerCount.html"
+                                  title='constant ovr_sys::ovrMaxLayerCount'>ovrMaxLayerCount</a></td>
+                           <td class='docblock-short'>
+                                <p>Specifies the maximum number of layers supported by <code>ovr_SubmitFrame</code>.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrMaxProvidedFrameStats.html"
+                                  title='constant ovr_sys::ovrMaxProvidedFrameStats'>ovrMaxProvidedFrameStats</a></td>
+                           <td class='docblock-short'>
+                                <p>Maximum number of frames of performance stats provided back to the caller of <code>ovr_GetPerfStats</code></p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrPerfHud_AppRenderTiming.html"
+                                  title='constant ovr_sys::ovrPerfHud_AppRenderTiming'>ovrPerfHud_AppRenderTiming</a></td>
+                           <td class='docblock-short'>
+                                <p>Shows render timing info for application</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrPerfHud_CompRenderTiming.html"
+                                  title='constant ovr_sys::ovrPerfHud_CompRenderTiming'>ovrPerfHud_CompRenderTiming</a></td>
+                           <td class='docblock-short'>
+                                <p>Shows render timing info for OVR compositor</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrPerfHud_LatencyTiming.html"
+                                  title='constant ovr_sys::ovrPerfHud_LatencyTiming'>ovrPerfHud_LatencyTiming</a></td>
+                           <td class='docblock-short'>
+                                <p>Shows latency related timing info</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrPerfHud_Off.html"
+                                  title='constant ovr_sys::ovrPerfHud_Off'>ovrPerfHud_Off</a></td>
+                           <td class='docblock-short'>
+                                <p>Turns off the performance HUD</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrPerfHud_PerfSummary.html"
+                                  title='constant ovr_sys::ovrPerfHud_PerfSummary'>ovrPerfHud_PerfSummary</a></td>
+                           <td class='docblock-short'>
+                                <p>Shows performance summary and headroom</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrPerfHud_VersionInfo.html"
+                                  title='constant ovr_sys::ovrPerfHud_VersionInfo'>ovrPerfHud_VersionInfo</a></td>
+                           <td class='docblock-short'>
+                                <p>Shows SDK &amp; HMD version Info</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrProjection_ClipRangeOpenGL.html"
+                                  title='constant ovr_sys::ovrProjection_ClipRangeOpenGL'>ovrProjection_ClipRangeOpenGL</a></td>
+                           <td class='docblock-short'>
+                                <p>Enable if the application is rendering with OpenGL and expects a projection matrix with a clipping range of (-w to w).
+Ignore this flag if your application already handles the conversion from D3D range (0 to w) to OpenGL.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrProjection_FarClipAtInfinity.html"
+                                  title='constant ovr_sys::ovrProjection_FarClipAtInfinity'>ovrProjection_FarClipAtInfinity</a></td>
+                           <td class='docblock-short'>
+                                <p>When this flag is used, the zfar value pushed into <code>ovrMatrix4f_Projection()</code> will be ignored
+NOTE: Enable only if <code>ovrProjection_FarLessThanNear</code> is also enabled where the far clipping plane will be pushed to infinity.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrProjection_FarLessThanNear.html"
+                                  title='constant ovr_sys::ovrProjection_FarLessThanNear'>ovrProjection_FarLessThanNear</a></td>
+                           <td class='docblock-short'>
+                                <p>After the projection transform is applied, far values stored in the depth buffer will be less than closer depth values.
+NOTE: Enable only if the application is using a floating-point depth buffer for proper precision.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrProjection_LeftHanded.html"
+                                  title='constant ovr_sys::ovrProjection_LeftHanded'>ovrProjection_LeftHanded</a></td>
+                           <td class='docblock-short'>
+                                <p>Enable if using left-handed transformations in your application.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrProjection_None.html"
+                                  title='constant ovr_sys::ovrProjection_None'>ovrProjection_None</a></td>
+                           <td class='docblock-short'>
+                                <p>Use for generating a default projection matrix that is:</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrStatus_OrientationTracked.html"
+                                  title='constant ovr_sys::ovrStatus_OrientationTracked'>ovrStatus_OrientationTracked</a></td>
+                           <td class='docblock-short'>
+                                <p>Orientation is currently tracked (connected and in use).</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrStatus_PositionTracked.html"
+                                  title='constant ovr_sys::ovrStatus_PositionTracked'>ovrStatus_PositionTracked</a></td>
+                           <td class='docblock-short'>
+                                <p>Position is currently tracked (false if out of range).</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrSuccess.html"
+                                  title='constant ovr_sys::ovrSuccess'>ovrSuccess</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrSuccess_BoundaryInvalid.html"
+                                  title='constant ovr_sys::ovrSuccess_BoundaryInvalid'>ovrSuccess_BoundaryInvalid</a></td>
+                           <td class='docblock-short'>
+                                <p>Boundary is invalid due to sensor change or was not setup.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrSuccess_DeviceUnavailable.html"
+                                  title='constant ovr_sys::ovrSuccess_DeviceUnavailable'>ovrSuccess_DeviceUnavailable</a></td>
+                           <td class='docblock-short'>
+                                <p>Device is not available for the requested operation.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrSuccess_NotVisible.html"
+                                  title='constant ovr_sys::ovrSuccess_NotVisible'>ovrSuccess_NotVisible</a></td>
+                           <td class='docblock-short'>
+                                <p>Returned from a call to SubmitFrame. The call succeeded, but what the app
+rendered will not be visible on the HMD. Ideally the app should continue
+calling SubmitFrame, but not do any rendering. When the result becomes
+<code>ovrSuccess</code>, rendering should continue as usual.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrTextureBind_DX_DepthStencil.html"
+                                  title='constant ovr_sys::ovrTextureBind_DX_DepthStencil'>ovrTextureBind_DX_DepthStencil</a></td>
+                           <td class='docblock-short'>
+                                <p>The chain buffers can be bound as depth and/or stencil buffers</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrTextureBind_DX_RenderTarget.html"
+                                  title='constant ovr_sys::ovrTextureBind_DX_RenderTarget'>ovrTextureBind_DX_RenderTarget</a></td>
+                           <td class='docblock-short'>
+                                <p>The application can write into the chain with pixel shader</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrTextureBind_DX_UnorderedAccess.html"
+                                  title='constant ovr_sys::ovrTextureBind_DX_UnorderedAccess'>ovrTextureBind_DX_UnorderedAccess</a></td>
+                           <td class='docblock-short'>
+                                <p>The application can write to the chain with compute shader</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrTextureBind_None.html"
+                                  title='constant ovr_sys::ovrTextureBind_None'>ovrTextureBind_None</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrTextureMisc_AllowGenerateMips.html"
+                                  title='constant ovr_sys::ovrTextureMisc_AllowGenerateMips'>ovrTextureMisc_AllowGenerateMips</a></td>
+                           <td class='docblock-short'>
+                                <p>DX only: Allow generation of the mip chain on the GPU via the GenerateMips
+call. This flag requires that RenderTarget binding also be specified.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrTextureMisc_DX_Typeless.html"
+                                  title='constant ovr_sys::ovrTextureMisc_DX_Typeless'>ovrTextureMisc_DX_Typeless</a></td>
+                           <td class='docblock-short'>
+                                <p>DX only: The underlying texture is created with a TYPELESS equivalent of the
+format specified in the texture desc. The SDK will still access the
+texture using the format specified in the texture desc, but the app can
+create views with different formats if this is specified.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrTextureMisc_None.html"
+                                  title='constant ovr_sys::ovrTextureMisc_None'>ovrTextureMisc_None</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrTextureMisc_ProtectedContent.html"
+                                  title='constant ovr_sys::ovrTextureMisc_ProtectedContent'>ovrTextureMisc_ProtectedContent</a></td>
+                           <td class='docblock-short'>
+                                <p>Texture swap chain contains protected content, and requires
+HDCP connection in order to display to HMD. Also prevents
+mirroring or other redirection of any frame containing this contents</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrTexture_2D.html"
+                                  title='constant ovr_sys::ovrTexture_2D'>ovrTexture_2D</a></td>
+                           <td class='docblock-short'>
+                                <p>2D textures.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrTexture_2D_External.html"
+                                  title='constant ovr_sys::ovrTexture_2D_External'>ovrTexture_2D_External</a></td>
+                           <td class='docblock-short'>
+                                <p>External 2D texture. Not used on PC</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrTexture_Count.html"
+                                  title='constant ovr_sys::ovrTexture_Count'>ovrTexture_Count</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrTexture_Cube.html"
+                                  title='constant ovr_sys::ovrTexture_Cube'>ovrTexture_Cube</a></td>
+                           <td class='docblock-short'>
+                                <p>Cube maps. Not currently supported on PC.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrTouch_A.html"
+                                  title='constant ovr_sys::ovrTouch_A'>ovrTouch_A</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrTouch_B.html"
+                                  title='constant ovr_sys::ovrTouch_B'>ovrTouch_B</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrTouch_LButtonMask.html"
+                                  title='constant ovr_sys::ovrTouch_LButtonMask'>ovrTouch_LButtonMask</a></td>
+                           <td class='docblock-short'>
+                                <p>Bit mask of all the button touches on the left controller</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrTouch_LIndexPointing.html"
+                                  title='constant ovr_sys::ovrTouch_LIndexPointing'>ovrTouch_LIndexPointing</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrTouch_LIndexTrigger.html"
+                                  title='constant ovr_sys::ovrTouch_LIndexTrigger'>ovrTouch_LIndexTrigger</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrTouch_LPoseMask.html"
+                                  title='constant ovr_sys::ovrTouch_LPoseMask'>ovrTouch_LPoseMask</a></td>
+                           <td class='docblock-short'>
+                                <p>Bit mask of all left controller poses</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrTouch_LThumb.html"
+                                  title='constant ovr_sys::ovrTouch_LThumb'>ovrTouch_LThumb</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrTouch_LThumbRest.html"
+                                  title='constant ovr_sys::ovrTouch_LThumbRest'>ovrTouch_LThumbRest</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrTouch_LThumbUp.html"
+                                  title='constant ovr_sys::ovrTouch_LThumbUp'>ovrTouch_LThumbUp</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrTouch_RButtonMask.html"
+                                  title='constant ovr_sys::ovrTouch_RButtonMask'>ovrTouch_RButtonMask</a></td>
+                           <td class='docblock-short'>
+                                <p>Bit mask of all the button touches on the right controller</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrTouch_RIndexPointing.html"
+                                  title='constant ovr_sys::ovrTouch_RIndexPointing'>ovrTouch_RIndexPointing</a></td>
+                           <td class='docblock-short'>
+                                <p>Finger pose state
+Derived internally based on distance, proximity to sensors and filtering.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrTouch_RIndexTrigger.html"
+                                  title='constant ovr_sys::ovrTouch_RIndexTrigger'>ovrTouch_RIndexTrigger</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrTouch_RPoseMask.html"
+                                  title='constant ovr_sys::ovrTouch_RPoseMask'>ovrTouch_RPoseMask</a></td>
+                           <td class='docblock-short'>
+                                <p>Bit mask of all right controller poses</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrTouch_RThumb.html"
+                                  title='constant ovr_sys::ovrTouch_RThumb'>ovrTouch_RThumb</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrTouch_RThumbRest.html"
+                                  title='constant ovr_sys::ovrTouch_RThumbRest'>ovrTouch_RThumbRest</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrTouch_RThumbUp.html"
+                                  title='constant ovr_sys::ovrTouch_RThumbUp'>ovrTouch_RThumbUp</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrTouch_X.html"
+                                  title='constant ovr_sys::ovrTouch_X'>ovrTouch_X</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrTouch_Y.html"
+                                  title='constant ovr_sys::ovrTouch_Y'>ovrTouch_Y</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrTrackedDevice_All.html"
+                                  title='constant ovr_sys::ovrTrackedDevice_All'>ovrTrackedDevice_All</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrTrackedDevice_HMD.html"
+                                  title='constant ovr_sys::ovrTrackedDevice_HMD'>ovrTrackedDevice_HMD</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrTrackedDevice_LTouch.html"
+                                  title='constant ovr_sys::ovrTrackedDevice_LTouch'>ovrTrackedDevice_LTouch</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrTrackedDevice_RTouch.html"
+                                  title='constant ovr_sys::ovrTrackedDevice_RTouch'>ovrTrackedDevice_RTouch</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrTrackedDevice_Touch.html"
+                                  title='constant ovr_sys::ovrTrackedDevice_Touch'>ovrTrackedDevice_Touch</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrTracker_Connected.html"
+                                  title='constant ovr_sys::ovrTracker_Connected'>ovrTracker_Connected</a></td>
+                           <td class='docblock-short'>
+                                <p>The sensor is present, else the sensor is absent or offline.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrTracker_PoseTracked.html"
+                                  title='constant ovr_sys::ovrTracker_PoseTracked'>ovrTracker_PoseTracked</a></td>
+                           <td class='docblock-short'>
+                                <p>The sensor has a valid pose, else the pose is unavailable. This will only be set if <code>ovrTracker_Connected</code> is set.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrTrackingCap_MagYawCorrection.html"
+                                  title='constant ovr_sys::ovrTrackingCap_MagYawCorrection'>ovrTrackingCap_MagYawCorrection</a></td>
+                           <td class='docblock-short'>
+                                <p>Supports yaw drift correction via a magnetometer or other means.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrTrackingCap_Orientation.html"
+                                  title='constant ovr_sys::ovrTrackingCap_Orientation'>ovrTrackingCap_Orientation</a></td>
+                           <td class='docblock-short'>
+                                <p>Supports orientation tracking (IMU).</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrTrackingCap_Position.html"
+                                  title='constant ovr_sys::ovrTrackingCap_Position'>ovrTrackingCap_Position</a></td>
+                           <td class='docblock-short'>
+                                <p>Supports positional tracking.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrTrackingOrigin_EyeLevel.html"
+                                  title='constant ovr_sys::ovrTrackingOrigin_EyeLevel'>ovrTrackingOrigin_EyeLevel</a></td>
+                           <td class='docblock-short'>
+                                <p>Tracking system origin reported at eye (HMD) height</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrTrackingOrigin_FloorLevel.html"
+                                  title='constant ovr_sys::ovrTrackingOrigin_FloorLevel'>ovrTrackingOrigin_FloorLevel</a></td>
+                           <td class='docblock-short'>
+                                <p>Tracking system origin reported at floor height</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrTrue.html"
+                                  title='constant ovr_sys::ovrTrue'>ovrTrue</a></td>
+                           <td class='docblock-short'>
+                                <p><code>ovrBool</code> value of true.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="constant" href="constant.ovrinit_WritableBits.html"
+                                  title='constant ovr_sys::ovrinit_WritableBits'>ovrinit_WritableBits</a></td>
+                           <td class='docblock-short'>
+                                <p>These bits are writable by user code.</p>
+                           </td>
+                       </tr></table><h2 id='functions' class='section-header'><a href="#functions">Functions</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.OVR_FAILURE.html"
+                                  title='fn ovr_sys::OVR_FAILURE'>OVR_FAILURE</a></td>
+                           <td class='docblock-short'>
+                                <p>Indicates if an <code>ovrResult</code> indicates failure.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.OVR_SUCCESS.html"
+                                  title='fn ovr_sys::OVR_SUCCESS'>OVR_SUCCESS</a></td>
+                           <td class='docblock-short'>
+                                <p>Indicates if an <code>ovrResult</code> indicates success.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.OVR_UNQUALIFIED_SUCCESS.html"
+                                  title='fn ovr_sys::OVR_UNQUALIFIED_SUCCESS'>OVR_UNQUALIFIED_SUCCESS</a></td>
+                           <td class='docblock-short'>
+                                <p>Indicates if an <code>ovrResult</code> indicates an unqualified success.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovrMatrix4f_OrthoSubProjection.html"
+                                  title='fn ovr_sys::ovrMatrix4f_OrthoSubProjection'>ovrMatrix4f_OrthoSubProjection</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Generates an orthographic sub-projection.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovrMatrix4f_Projection.html"
+                                  title='fn ovr_sys::ovrMatrix4f_Projection'>ovrMatrix4f_Projection</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Used to generate projection from <code>ovrEyeDesc::Fov</code>.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovrPosef_FlipHandedness.html"
+                                  title='fn ovr_sys::ovrPosef_FlipHandedness'>ovrPosef_FlipHandedness</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Tracking poses provided by the SDK come in a right-handed coordinate system. If an application
+is passing in <code>ovrProjection_LeftHanded</code> into <code>ovrMatrix4f_Projection</code>, then it should also use
+this function to flip the HMD tracking poses to be left-handed.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovrTimewarpProjectionDesc_FromProjection.html"
+                                  title='fn ovr_sys::ovrTimewarpProjectionDesc_FromProjection'>ovrTimewarpProjectionDesc_FromProjection</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Extracts the required data from the result of <code>ovrMatrix4f_Projection</code>.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_CalcEyePoses.html"
+                                  title='fn ovr_sys::ovr_CalcEyePoses'>ovr_CalcEyePoses</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Computes offset eye poses based on headPose returned by <code>ovrTrackingState</code>.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_ClearShouldRecenterFlag.html"
+                                  title='fn ovr_sys::ovr_ClearShouldRecenterFlag'>ovr_ClearShouldRecenterFlag</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Clears the ShouldRecenter status bit in <code>ovrSessionStatus</code>.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_CommitTextureSwapChain.html"
+                                  title='fn ovr_sys::ovr_CommitTextureSwapChain'>ovr_CommitTextureSwapChain</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Commits any pending changes to an <code>ovrTextureSwapChain</code>, and advances its current index</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_Create.html"
+                                  title='fn ovr_sys::ovr_Create'>ovr_Create</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Creates a handle to a VR session.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_Destroy.html"
+                                  title='fn ovr_sys::ovr_Destroy'>ovr_Destroy</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Destroys the session.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_DestroyMirrorTexture.html"
+                                  title='fn ovr_sys::ovr_DestroyMirrorTexture'>ovr_DestroyMirrorTexture</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>MirrorTexture creation is rendering API-specific.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_DestroyTextureSwapChain.html"
+                                  title='fn ovr_sys::ovr_DestroyTextureSwapChain'>ovr_DestroyTextureSwapChain</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Destroys an <code>ovrTextureSwapChain</code> and frees all the resources associated with it.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_Detect.html"
+                                  title='fn ovr_sys::ovr_Detect'>ovr_Detect</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Detects Oculus Runtime and Device Status</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_GetBool.html"
+                                  title='fn ovr_sys::ovr_GetBool'>ovr_GetBool</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Reads a boolean property.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_GetBoundaryDimensions.html"
+                                  title='fn ovr_sys::ovr_GetBoundaryDimensions'>ovr_GetBoundaryDimensions</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Gets the dimension of the Boundary System&#39;s &quot;play area&quot; or &quot;outer boundary&quot;.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_GetBoundaryGeometry.html"
+                                  title='fn ovr_sys::ovr_GetBoundaryGeometry'>ovr_GetBoundaryGeometry</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Gets the geometry of the Boundary System&#39;s &quot;play area&quot; or &quot;outer boundary&quot; as 3D floor points.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_GetBoundaryVisible.html"
+                                  title='fn ovr_sys::ovr_GetBoundaryVisible'>ovr_GetBoundaryVisible</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Returns if the boundary is currently visible.
+Note: visibility is false if the user has turned off boundaries, otherwise, it&#39;s true if the app has requested
+boundaries to be visible or if any tracked device is currently triggering it. This may not exactly match rendering
+due to fade-in and fade-out effects.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_GetConnectedControllerTypes.html"
+                                  title='fn ovr_sys::ovr_GetConnectedControllerTypes'>ovr_GetConnectedControllerTypes</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Returns controller types connected to the system OR&#39;ed together.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_GetControllerVibrationState.html"
+                                  title='fn ovr_sys::ovr_GetControllerVibrationState'>ovr_GetControllerVibrationState</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Gets the Haptics engine playback state of a specific Touch controller.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_GetEyePoses.html"
+                                  title='fn ovr_sys::ovr_GetEyePoses'>ovr_GetEyePoses</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Returns the predicted head pose in outHmdTrackingState and offset eye poses in outEyePoses.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_GetFloat.html"
+                                  title='fn ovr_sys::ovr_GetFloat'>ovr_GetFloat</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Reads a <code>f32</code> property.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_GetFloatArray.html"
+                                  title='fn ovr_sys::ovr_GetFloatArray'>ovr_GetFloatArray</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Reads a <code>f32</code> array property.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_GetFovTextureSize.html"
+                                  title='fn ovr_sys::ovr_GetFovTextureSize'>ovr_GetFovTextureSize</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Calculates the recommended viewport size for rendering a given eye within the HMD
+with a given FOV cone.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_GetHmdDesc.html"
+                                  title='fn ovr_sys::ovr_GetHmdDesc'>ovr_GetHmdDesc</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Returns information about the current HMD.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_GetInputState.html"
+                                  title='fn ovr_sys::ovr_GetInputState'>ovr_GetInputState</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Returns the most recent input state for controllers, without positional tracking info.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_GetInt.html"
+                                  title='fn ovr_sys::ovr_GetInt'>ovr_GetInt</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Reads an integer property.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_GetLastErrorInfo.html"
+                                  title='fn ovr_sys::ovr_GetLastErrorInfo'>ovr_GetLastErrorInfo</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Returns information about the most recent failed return value by the
+current thread for this library.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_GetPerfStats.html"
+                                  title='fn ovr_sys::ovr_GetPerfStats'>ovr_GetPerfStats</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Retrieves performance stats for the VR app as well as the SDK compositor.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_GetPredictedDisplayTime.html"
+                                  title='fn ovr_sys::ovr_GetPredictedDisplayTime'>ovr_GetPredictedDisplayTime</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Gets the time of the specified frame midpoint.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_GetRenderDesc.html"
+                                  title='fn ovr_sys::ovr_GetRenderDesc'>ovr_GetRenderDesc</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Computes the distortion viewport, view adjust, and other rendering parameters for
+the specified eye.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_GetSessionStatus.html"
+                                  title='fn ovr_sys::ovr_GetSessionStatus'>ovr_GetSessionStatus</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Returns status information for the application.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_GetString.html"
+                                  title='fn ovr_sys::ovr_GetString'>ovr_GetString</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Reads a string property.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_GetTextureSwapChainCurrentIndex.html"
+                                  title='fn ovr_sys::ovr_GetTextureSwapChainCurrentIndex'>ovr_GetTextureSwapChainCurrentIndex</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Gets the current index in an <code>ovrTextureSwapChain</code>.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_GetTextureSwapChainDesc.html"
+                                  title='fn ovr_sys::ovr_GetTextureSwapChainDesc'>ovr_GetTextureSwapChainDesc</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Gets the description of the buffers in an <code>ovrTextureSwapChain</code></p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_GetTextureSwapChainLength.html"
+                                  title='fn ovr_sys::ovr_GetTextureSwapChainLength'>ovr_GetTextureSwapChainLength</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>TextureSwapChain creation is rendering API-specific.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_GetTimeInSeconds.html"
+                                  title='fn ovr_sys::ovr_GetTimeInSeconds'>ovr_GetTimeInSeconds</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Returns global, absolute high-resolution time in seconds.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_GetTouchHapticsDesc.html"
+                                  title='fn ovr_sys::ovr_GetTouchHapticsDesc'>ovr_GetTouchHapticsDesc</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Gets information about Haptics engine for the specified Touch controller.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_GetTrackerCount.html"
+                                  title='fn ovr_sys::ovr_GetTrackerCount'>ovr_GetTrackerCount</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Returns the number of attached trackers.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_GetTrackerDesc.html"
+                                  title='fn ovr_sys::ovr_GetTrackerDesc'>ovr_GetTrackerDesc</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Returns a given attached tracker description.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_GetTrackerPose.html"
+                                  title='fn ovr_sys::ovr_GetTrackerPose'>ovr_GetTrackerPose</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Returns the <code>ovrTrackerPose</code> for the given attached tracker.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_GetTrackingOriginType.html"
+                                  title='fn ovr_sys::ovr_GetTrackingOriginType'>ovr_GetTrackingOriginType</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Gets the tracking origin state</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_GetTrackingState.html"
+                                  title='fn ovr_sys::ovr_GetTrackingState'>ovr_GetTrackingState</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Returns tracking state reading based on the specified absolute system time.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_GetVersionString.html"
+                                  title='fn ovr_sys::ovr_GetVersionString'>ovr_GetVersionString</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Returns the version string representing the LibOVRRT version.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_IdentifyClient.html"
+                                  title='fn ovr_sys::ovr_IdentifyClient'>ovr_IdentifyClient</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Identify client application info.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_Initialize.html"
+                                  title='fn ovr_sys::ovr_Initialize'>ovr_Initialize</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Initializes LibOVR</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_RecenterTrackingOrigin.html"
+                                  title='fn ovr_sys::ovr_RecenterTrackingOrigin'>ovr_RecenterTrackingOrigin</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Re-centers the sensor position and orientation.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_RequestBoundaryVisible.html"
+                                  title='fn ovr_sys::ovr_RequestBoundaryVisible'>ovr_RequestBoundaryVisible</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Requests boundary to be visible.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_ResetBoundaryLookAndFeel.html"
+                                  title='fn ovr_sys::ovr_ResetBoundaryLookAndFeel'>ovr_ResetBoundaryLookAndFeel</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Resets the look and feel of the Boundary System to its default state.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_ResetPerfStats.html"
+                                  title='fn ovr_sys::ovr_ResetPerfStats'>ovr_ResetPerfStats</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Resets the accumulated stats reported in each <code>ovrPerfStatsPerCompositorFrame</code> back to zero.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_SetBool.html"
+                                  title='fn ovr_sys::ovr_SetBool'>ovr_SetBool</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Writes or creates a boolean property.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_SetBoundaryLookAndFeel.html"
+                                  title='fn ovr_sys::ovr_SetBoundaryLookAndFeel'>ovr_SetBoundaryLookAndFeel</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Sets the look and feel of the Boundary System.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_SetControllerVibration.html"
+                                  title='fn ovr_sys::ovr_SetControllerVibration'>ovr_SetControllerVibration</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Sets constant vibration (with specified frequency and amplitude) to a controller.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_SetFloat.html"
+                                  title='fn ovr_sys::ovr_SetFloat'>ovr_SetFloat</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Writes or creates a <code>f32</code> property.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_SetFloatArray.html"
+                                  title='fn ovr_sys::ovr_SetFloatArray'>ovr_SetFloatArray</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Writes or creates a <code>f32</code> array property.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_SetInt.html"
+                                  title='fn ovr_sys::ovr_SetInt'>ovr_SetInt</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Writes or creates an integer property.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_SetString.html"
+                                  title='fn ovr_sys::ovr_SetString'>ovr_SetString</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Writes or creates a string property.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_SetTrackingOriginType.html"
+                                  title='fn ovr_sys::ovr_SetTrackingOriginType'>ovr_SetTrackingOriginType</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Sets the tracking origin type</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_Shutdown.html"
+                                  title='fn ovr_sys::ovr_Shutdown'>ovr_Shutdown</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Shuts down LibOVR</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_SpecifyTrackingOrigin.html"
+                                  title='fn ovr_sys::ovr_SpecifyTrackingOrigin'>ovr_SpecifyTrackingOrigin</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Allows manually tweaking the sensor position and orientation.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_SubmitControllerVibration.html"
+                                  title='fn ovr_sys::ovr_SubmitControllerVibration'>ovr_SubmitControllerVibration</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Submits a Haptics buffer (used for vibration) to Touch (only) controllers.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_SubmitFrame.html"
+                                  title='fn ovr_sys::ovr_SubmitFrame'>ovr_SubmitFrame</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Submits layers for distortion and display.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_TestBoundary.html"
+                                  title='fn ovr_sys::ovr_TestBoundary'>ovr_TestBoundary</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Tests collision/proximity of position tracked devices (e.g. HMD and/or Touch) against the Boundary System.
+Note: this method is similar to <code>ovr_BoundaryTestPoint</code> but can be more precise as it may take into account device acceleration/momentum.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_TestBoundaryPoint.html"
+                                  title='fn ovr_sys::ovr_TestBoundaryPoint'>ovr_TestBoundaryPoint</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Tests collision/proximity of a 3D point against the Boundary System.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.ovr_TraceMessage.html"
+                                  title='fn ovr_sys::ovr_TraceMessage'>ovr_TraceMessage</a><a title='unsafe function' href='#'><sup>⚠</sup></a></td>
+                           <td class='docblock-short'>
+                                <p>Writes a message string to the LibOVR tracing mechanism (if enabled).</p>
+                           </td>
+                       </tr></table><h2 id='types' class='section-header'><a href="#types">Type Definitions</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class="type" href="type.ovrBool.html"
+                                  title='type ovr_sys::ovrBool'>ovrBool</a></td>
+                           <td class='docblock-short'>
+                                <p>Boolean type</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="type" href="type.ovrBoundaryType.html"
+                                  title='type ovr_sys::ovrBoundaryType'>ovrBoundaryType</a></td>
+                           <td class='docblock-short'>
+                                <p>Boundary types that specified while using the boundary system</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="type" href="type.ovrButton.html"
+                                  title='type ovr_sys::ovrButton'>ovrButton</a></td>
+                           <td class='docblock-short'>
+                                <p>Describes button input types.
+Button inputs are combined; that is they will be reported as pressed if they are
+pressed on either one of the two devices.
+The <code>ovrButton_Up</code>/Down/Left/Right map to both XBox D-Pad and directional buttons.
+The <code>ovrButton_Enter</code> and <code>ovrButton_Return</code> map to Start and Back controller buttons, respectively.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="type" href="type.ovrControllerType.html"
+                                  title='type ovr_sys::ovrControllerType'>ovrControllerType</a></td>
+                           <td class='docblock-short'>
+                                <p>Specifies which controller is connected; multiple can be connected at once.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="type" href="type.ovrDebugHudStereoMode.html"
+                                  title='type ovr_sys::ovrDebugHudStereoMode'>ovrDebugHudStereoMode</a></td>
+                           <td class='docblock-short'>
+                                <p>Debug HUD is provided to help developers gauge and debug the fidelity of their app&#39;s
+stereo rendering characteristics. Using the provided quad and crosshair guides,
+the developer can verify various aspects such as VR tracking units (e.g. meters),
+stereo camera-parallax properties (e.g. making sure objects at infinity are rendered
+with the proper separation), measuring VR geometry sizes and distances and more.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="type" href="type.ovrErrorType.html"
+                                  title='type ovr_sys::ovrErrorType'>ovrErrorType</a></td>
+                           <td class='docblock-short'>
+                                <p>Public error types</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="type" href="type.ovrEyeType.html"
+                                  title='type ovr_sys::ovrEyeType'>ovrEyeType</a></td>
+                           <td class='docblock-short'>
+                                <p>Specifies which eye is being used for rendering.
+This type explicitly does not include a third &quot;NoStereo&quot; monoscopic option, as such is
+not required for an HMD-centered API.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="type" href="type.ovrHandType.html"
+                                  title='type ovr_sys::ovrHandType'>ovrHandType</a></td>
+                           <td class='docblock-short'>
+                                <p>Provides names for the left and right hand array indexes.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="type" href="type.ovrHapticsBufferSubmitMode.html"
+                                  title='type ovr_sys::ovrHapticsBufferSubmitMode'>ovrHapticsBufferSubmitMode</a></td>
+                           <td class='docblock-short'>
+                                <p>Haptics buffer submit mode</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="type" href="type.ovrHmdCaps.html"
+                                  title='type ovr_sys::ovrHmdCaps'>ovrHmdCaps</a></td>
+                           <td class='docblock-short'>
+                                <p>HMD capability bits reported by device.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="type" href="type.ovrHmdType.html"
+                                  title='type ovr_sys::ovrHmdType'>ovrHmdType</a></td>
+                           <td class='docblock-short'>
+                                <p>Enumerates all HMD types that we support.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="type" href="type.ovrInitFlags.html"
+                                  title='type ovr_sys::ovrInitFlags'>ovrInitFlags</a></td>
+                           <td class='docblock-short'>
+                                <p>Initialization flags.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="type" href="type.ovrLayerFlags.html"
+                                  title='type ovr_sys::ovrLayerFlags'>ovrLayerFlags</a></td>
+                           <td class='docblock-short'>
+                                <p>Identifies flags used by <code>ovrLayerHeader</code> and which are passed to <code>ovr_SubmitFrame</code>.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="type" href="type.ovrLayerHudMode.html"
+                                  title='type ovr_sys::ovrLayerHudMode'>ovrLayerHudMode</a></td>
+                           <td class='docblock-short'>
+                                <p>Layer HUD enables the HMD user to see information about a layer</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="type" href="type.ovrLayerType.html"
+                                  title='type ovr_sys::ovrLayerType'>ovrLayerType</a></td>
+                           <td class='docblock-short'>
+                                <p>Each layer type has an associated struct, such as <code>ovrLayerEyeFov</code>.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="type" href="type.ovrLogCallback.html"
+                                  title='type ovr_sys::ovrLogCallback'>ovrLogCallback</a></td>
+                           <td class='docblock-short'>
+                                <p>Signature of the logging callback function pointer type.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="type" href="type.ovrLogLevel.html"
+                                  title='type ovr_sys::ovrLogLevel'>ovrLogLevel</a></td>
+                           <td class='docblock-short'>
+                                <p>Logging levels</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="type" href="type.ovrMirrorTexture.html"
+                                  title='type ovr_sys::ovrMirrorTexture'>ovrMirrorTexture</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="type" href="type.ovrPerfHudMode.html"
+                                  title='type ovr_sys::ovrPerfHudMode'>ovrPerfHudMode</a></td>
+                           <td class='docblock-short'>
+                                <p>Performance HUD enables the HMD user to see information critical to
+the real-time operation of the VR application such as latency timing,
+and CPU &amp; GPU performance metrics</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="type" href="type.ovrProjectionModifier.html"
+                                  title='type ovr_sys::ovrProjectionModifier'>ovrProjectionModifier</a></td>
+                           <td class='docblock-short'>
+                                <p>Enumerates modifications to the projection matrix based on the application&#39;s needs.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="type" href="type.ovrResult.html"
+                                  title='type ovr_sys::ovrResult'>ovrResult</a></td>
+                           <td class='docblock-short'>
+                                <p>API call results are represented at the highest level by a single <code>ovrResult</code>.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="type" href="type.ovrSession.html"
+                                  title='type ovr_sys::ovrSession'>ovrSession</a></td>
+                           <td class='docblock-short'>
+                                <p>Used as an opaque pointer to an OVR session.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="type" href="type.ovrStatusBits.html"
+                                  title='type ovr_sys::ovrStatusBits'>ovrStatusBits</a></td>
+                           <td class='docblock-short'>
+                                <p>Bit flags describing the current status of sensor tracking.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="type" href="type.ovrSuccessType.html"
+                                  title='type ovr_sys::ovrSuccessType'>ovrSuccessType</a></td>
+                           <td class='docblock-short'>
+                                <p>This is a general success result. Use  <code>OVR_SUCCESS</code> to test for success.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="type" href="type.ovrSuccessTypes.html"
+                                  title='type ovr_sys::ovrSuccessTypes'>ovrSuccessTypes</a></td>
+                           <td class='docblock-short'>
+                                <p>Success is a value greater or equal to 0, while all error types are negative values.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="type" href="type.ovrTextureBindFlags.html"
+                                  title='type ovr_sys::ovrTextureBindFlags'>ovrTextureBindFlags</a></td>
+                           <td class='docblock-short'>
+                                <p>The bindings required for texture swap chain.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="type" href="type.ovrTextureFormat.html"
+                                  title='type ovr_sys::ovrTextureFormat'>ovrTextureFormat</a></td>
+                           <td class='docblock-short'>
+                                <p>The format of a texture.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="type" href="type.ovrTextureMiscFlags.html"
+                                  title='type ovr_sys::ovrTextureMiscFlags'>ovrTextureMiscFlags</a></td>
+                           <td class='docblock-short'>
+                                <p>Misc flags overriding particular behaviors of a texture swap chain</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="type" href="type.ovrTextureSwapChain.html"
+                                  title='type ovr_sys::ovrTextureSwapChain'>ovrTextureSwapChain</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="type" href="type.ovrTextureType.html"
+                                  title='type ovr_sys::ovrTextureType'>ovrTextureType</a></td>
+                           <td class='docblock-short'>
+                                <p>The type of texture resource.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="type" href="type.ovrTouch.html"
+                                  title='type ovr_sys::ovrTouch'>ovrTouch</a></td>
+                           <td class='docblock-short'>
+                                <p>Describes touch input types.
+These values map to capacitive touch values reported <code>ovrInputState</code>::Touch.
+Some of these values are mapped to button bits for consistency.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="type" href="type.ovrTrackedDeviceType.html"
+                                  title='type ovr_sys::ovrTrackedDeviceType'>ovrTrackedDeviceType</a></td>
+                           <td class='docblock-short'>
+                                <p>Position tracked devices</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="type" href="type.ovrTrackerFlags.html"
+                                  title='type ovr_sys::ovrTrackerFlags'>ovrTrackerFlags</a></td>
+                           <td class='docblock-short'>
+                                <p>Specifies sensor flags.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="type" href="type.ovrTrackingCaps.html"
+                                  title='type ovr_sys::ovrTrackingCaps'>ovrTrackingCaps</a></td>
+                           <td class='docblock-short'>
+                                <p>Tracking capability bits reported by the device.
+Used with  <code>ovr_GetTrackingCaps</code>.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="type" href="type.ovrTrackingOrigin.html"
+                                  title='type ovr_sys::ovrTrackingOrigin'>ovrTrackingOrigin</a></td>
+                           <td class='docblock-short'>
+                                <p>Specifies the coordinate system <code>ovrTrackingState</code> returns tracking poses in.
+Used with  <code>ovr_SetTrackingOriginType()</code></p>
+                           </td>
+                       </tr></table></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "ovr_sys";
+    </script>
+    <script src="../main.js"></script>
+    <script defer src="../search-index.js"></script>
+</body>
+</html>

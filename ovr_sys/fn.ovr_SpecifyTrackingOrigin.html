@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `ovr_SpecifyTrackingOrigin` fn in crate `ovr_sys`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, ovr_SpecifyTrackingOrigin">
+
+    <title>ovr_sys::ovr_SpecifyTrackingOrigin - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc fn">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='index.html'>ovr_sys</a></p><script>window.sidebarCurrent = {name: 'ovr_SpecifyTrackingOrigin', ty: 'fn', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content">
+<h1 class='fqn'><span class='in-band'>Function <a href='index.html'>ovr_sys</a>::<wbr><a class="fn" href=''>ovr_SpecifyTrackingOrigin</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../src/ovr_sys/lib.rs.html#1731' title='goto source code'>[src]</a></span></h1>
+<pre class='rust fn'>pub unsafe extern &quot;C&quot; fn ovr_SpecifyTrackingOrigin(<br>&nbsp;&nbsp;&nbsp;&nbsp;session: <a class="type" href="../ovr_sys/type.ovrSession.html" title="type ovr_sys::ovrSession">ovrSession</a>, <br>&nbsp;&nbsp;&nbsp;&nbsp;originPose: <a class="struct" href="../ovr_sys/struct.ovrPosef.html" title="struct ovr_sys::ovrPosef">ovrPosef</a><br>) -&gt; <a class="type" href="../ovr_sys/type.ovrResult.html" title="type ovr_sys::ovrResult">ovrResult</a></pre><div class='docblock'><p>Allows manually tweaking the sensor position and orientation.</p>
+
+<p>This function is similar to <code>ovr_RecenterTrackingOrigin</code> in that it modifies the
+(x,y,z) positional components and the yaw orientation component of the tracking space for
+the HMD and controllers.</p>
+
+<p>While <code>ovr_RecenterTrackingOrigin</code> resets the tracking origin in reference to the HMD&#39;s
+current pose, <code>ovr_SpecifyTrackingOrigin</code> allows the caller to explicitly specify a transform
+for the tracking origin. This transform is expected to be an offset to the most recent
+recentered origin, so calling this function repeatedly with the same originPose will keep
+nudging the recentered origin in that direction.</p>
+
+<p>There are several use cases for this function. For example, if the application decides to
+limit the yaw, or translation of the recentered pose instead of directly using the HMD pose
+the application can query the current tracking state via <code>ovr_GetTrackingState</code>, and apply
+some limitations to the HMD pose because feeding this pose back into this function.
+Similarly, this can be used to &quot;adjust the seating position&quot; incrementally in apps that
+feature seated experiences such as cockpit-based games.</p>
+
+<p>This function can emulate <code>ovr_RecenterTrackingOrigin</code> as such:</p>
+
+<pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="ident">ts</span> <span class="op">=</span> <span class="ident">ovr_GetTrackingState</span>(<span class="ident">session</span>, <span class="number">0.0</span>, <span class="ident">ovrFalse</span>);
+<span class="ident">ovr_SpecifyTrackingOrigin</span>(<span class="ident">session</span>, <span class="ident">ts</span>.<span class="ident">HeadPose</span>.<span class="ident">ThePose</span>);</pre>
+
+<p>The roll and pitch orientation components are determined by gravity and cannot be redefined.
+If you are using ovrTrackerPoses then you will need to call <code>ovr_GetTrackerPose</code> after
+this, because the sensor position(s) will change as a result of this.</p>
+
+<p>For more info, see the notes on each ovrTrackingOrigin enumeration to understand how
+recenter will vary slightly in its behavior based on the current ovrTrackingOrigin setting.</p>
+
+<p><code>session</code> Specifies an <code>ovrSession</code> previously returned by <code>ovr_Create</code>.</p>
+
+<p><code>originPose</code> Specifies a pose that will be used to transform the current tracking
+origin.</p>
+
+<p>Returns an <code>ovrResult</code> indicating success or failure. In the case of failure, use
+        <code>ovr_GetLastErrorInfo</code> to get more information. Return values include but aren&#39;t limited
+        to:</p>
+
+<ul>
+<li><code>ovrSuccess</code>: Completed successfully.</li>
+<li><code>ovrError_InvalidParameter</code>: The heading direction in <code>originPose</code> was invalid,
+    such as facing vertically. This can happen if the caller is directly feeding the pose
+    of a position-tracked device such as an HMD or controller into this function.</li>
+</ul>
+
+<p>see <a href="type.ovrTrackingOrigin.html"><code>ovrTrackingOrigin</code></a>, <a href="fn.ovr_GetTrackerPose.html"><code>ovr_GetTrackerPose</code></a>, <a href="fn.ovr_RecenterTrackingOrigin.html"><code>ovr_RecenterTrackingOrigin</code></a></p>
+</div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "ovr_sys";
+    </script>
+    <script src="../main.js"></script>
+    <script defer src="../search-index.js"></script>
+</body>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `ovrPerfStatsPerCompositorFrame` struct in crate `ovr_sys`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, ovrPerfStatsPerCompositorFrame">
+
+    <title>ovr_sys::ovrPerfStatsPerCompositorFrame - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc struct">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'>Struct ovrPerfStatsPerCompositorFrame</p><div class="block items"><ul><li><a href="#fields">Fields</a></li><li><a href="#implementations">Trait Implementations</a></li></ul></div><p class='location'><a href='index.html'>ovr_sys</a></p><script>window.sidebarCurrent = {name: 'ovrPerfStatsPerCompositorFrame', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content">
+<h1 class='fqn'><span class='in-band'>Struct <a href='index.html'>ovr_sys</a>::<wbr><a class="struct" href=''>ovrPerfStatsPerCompositorFrame</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../src/ovr_sys/lib.rs.html#2439-2514' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'><div class="docblock attributes">#[repr(C)]
+</div>pub struct ovrPerfStatsPerCompositorFrame {
+    pub _align: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">[</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">; 0]</a>,
+    pub HmdVsyncIndex: <a class="type" href="https://doc.rust-lang.org/libc/x86_64-pc-windows-msvc/libc/type.c_int.html" title="type libc::c_int">c_int</a>,
+    pub AppFrameIndex: <a class="type" href="https://doc.rust-lang.org/libc/x86_64-pc-windows-msvc/libc/type.c_int.html" title="type libc::c_int">c_int</a>,
+    pub AppDroppedFrameCount: <a class="type" href="https://doc.rust-lang.org/libc/x86_64-pc-windows-msvc/libc/type.c_int.html" title="type libc::c_int">c_int</a>,
+    pub AppMotionToPhotonLatency: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>,
+    pub AppQueueAheadTime: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>,
+    pub AppCpuElapsedTime: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>,
+    pub AppGpuElapsedTime: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>,
+    pub CompositorFrameIndex: <a class="type" href="https://doc.rust-lang.org/libc/x86_64-pc-windows-msvc/libc/type.c_int.html" title="type libc::c_int">c_int</a>,
+    pub CompositorDroppedFrameCount: <a class="type" href="https://doc.rust-lang.org/libc/x86_64-pc-windows-msvc/libc/type.c_int.html" title="type libc::c_int">c_int</a>,
+    pub CompositorLatency: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>,
+    pub CompositorCpuElapsedTime: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>,
+    pub CompositorGpuElapsedTime: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>,
+    pub CompositorCpuStartToGpuEndElapsedTime: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>,
+    pub CompositorGpuEndToVsyncElapsedTime: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>,
+}</pre><div class='docblock'><p>Contains the performance stats for a given SDK compositor frame</p>
+
+<p>All of the c_int fields can be reset via the <code>ovr_ResetPerfStats</code> call.</p>
+</div><h2 id='fields' class='fields'>Fields</h2><span id='structfield._align' class="structfield">
+                           <span id='_align.v' class='invisible'>
+                           <code>_align: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">[</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.array.html">; 0]</a></code>
+                           </span></span><span id='structfield.HmdVsyncIndex' class="structfield">
+                           <span id='HmdVsyncIndex.v' class='invisible'>
+                           <code>HmdVsyncIndex: <a class="type" href="https://doc.rust-lang.org/libc/x86_64-pc-windows-msvc/libc/type.c_int.html" title="type libc::c_int">c_int</a></code>
+                           </span></span><div class='docblock'><p>Vsync Frame Index - increments with each HMD vertical synchronization signal (i.e. vsync or refresh rate)
+If the compositor drops a frame, expect this value to increment more than 1 at a time.</p>
+</div><span id='structfield.AppFrameIndex' class="structfield">
+                           <span id='AppFrameIndex.v' class='invisible'>
+                           <code>AppFrameIndex: <a class="type" href="https://doc.rust-lang.org/libc/x86_64-pc-windows-msvc/libc/type.c_int.html" title="type libc::c_int">c_int</a></code>
+                           </span></span><div class='docblock'><p>Application stats</p>
+
+<p>Index that increments with each successive <code>ovr_SubmitFrame</code> call</p>
+</div><span id='structfield.AppDroppedFrameCount' class="structfield">
+                           <span id='AppDroppedFrameCount.v' class='invisible'>
+                           <code>AppDroppedFrameCount: <a class="type" href="https://doc.rust-lang.org/libc/x86_64-pc-windows-msvc/libc/type.c_int.html" title="type libc::c_int">c_int</a></code>
+                           </span></span><div class='docblock'><p>If the app fails to call <code>ovr_SubmitFrame</code> on time, then expect this value to increment with each missed frame</p>
+</div><span id='structfield.AppMotionToPhotonLatency' class="structfield">
+                           <span id='AppMotionToPhotonLatency.v' class='invisible'>
+                           <code>AppMotionToPhotonLatency: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a></code>
+                           </span></span><div class='docblock'><p>Motion-to-photon latency for the application
+This value is calculated by either using the SensorSampleTime provided for the <code>ovrLayerEyeFov</code> or if that
+is not available, then the call to <code>ovr_GetTrackingState</code> which has latencyMarker set to <code>ovrTrue</code></p>
+</div><span id='structfield.AppQueueAheadTime' class="structfield">
+                           <span id='AppQueueAheadTime.v' class='invisible'>
+                           <code>AppQueueAheadTime: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a></code>
+                           </span></span><div class='docblock'><p>Amount of queue-ahead in seconds provided to the app based on performance and overlap of CPU &amp; GPU utilization
+A value of 0.0 would mean the CPU &amp; GPU workload is being completed in 1 frame&#39;s worth of time, while
+11 ms (on the CV1) of queue ahead would indicate that the app&#39;s CPU workload for the next frame is
+overlapping the app&#39;s GPU workload for the current frame.</p>
+</div><span id='structfield.AppCpuElapsedTime' class="structfield">
+                           <span id='AppCpuElapsedTime.v' class='invisible'>
+                           <code>AppCpuElapsedTime: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a></code>
+                           </span></span><div class='docblock'><p>Amount of time in seconds spent on the CPU by the app&#39;s render-thread that calls <code>ovr_SubmitFrame</code>
+Measured as elapsed time between from when app regains control from <code>ovr_SubmitFrame</code> to the next time the app
+calls <code>ovr_SubmitFrame</code>.</p>
+</div><span id='structfield.AppGpuElapsedTime' class="structfield">
+                           <span id='AppGpuElapsedTime.v' class='invisible'>
+                           <code>AppGpuElapsedTime: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a></code>
+                           </span></span><div class='docblock'><p>Amount of time in seconds spent on the GPU by the app
+Measured as elapsed time between each <code>ovr_SubmitFrame</code> call using GPU timing queries.</p>
+</div><span id='structfield.CompositorFrameIndex' class="structfield">
+                           <span id='CompositorFrameIndex.v' class='invisible'>
+                           <code>CompositorFrameIndex: <a class="type" href="https://doc.rust-lang.org/libc/x86_64-pc-windows-msvc/libc/type.c_int.html" title="type libc::c_int">c_int</a></code>
+                           </span></span><div class='docblock'><p>SDK Compositor stats</p>
+
+<p>Index that increments each time the SDK compositor completes a distortion and timewarp pass
+Since the compositor operates asynchronously, even if the app calls <code>ovr_SubmitFrame</code> too late,
+the compositor will kick off for each vsync.</p>
+</div><span id='structfield.CompositorDroppedFrameCount' class="structfield">
+                           <span id='CompositorDroppedFrameCount.v' class='invisible'>
+                           <code>CompositorDroppedFrameCount: <a class="type" href="https://doc.rust-lang.org/libc/x86_64-pc-windows-msvc/libc/type.c_int.html" title="type libc::c_int">c_int</a></code>
+                           </span></span><div class='docblock'><p>Increments each time the SDK compositor fails to complete in time
+This is not tied to the app&#39;s performance, but failure to complete can be tied to other factors
+such as OS capabilities, overall available hardware cycles to execute the compositor in time
+and other factors outside of the app&#39;s control.</p>
+</div><span id='structfield.CompositorLatency' class="structfield">
+                           <span id='CompositorLatency.v' class='invisible'>
+                           <code>CompositorLatency: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a></code>
+                           </span></span><div class='docblock'><p>Motion-to-photon latency of the SDK compositor in seconds
+This is the latency of timewarp which corrects the higher app latency as well as dropped app frames.</p>
+</div><span id='structfield.CompositorCpuElapsedTime' class="structfield">
+                           <span id='CompositorCpuElapsedTime.v' class='invisible'>
+                           <code>CompositorCpuElapsedTime: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a></code>
+                           </span></span><div class='docblock'><p>The amount of time in seconds spent on the CPU by the SDK compositor. Unless the VR app is utilizing
+all of the CPU cores at their peak performance, there is a good chance the compositor CPU times
+will not affect the app&#39;s CPU performance in a major way.</p>
+</div><span id='structfield.CompositorGpuElapsedTime' class="structfield">
+                           <span id='CompositorGpuElapsedTime.v' class='invisible'>
+                           <code>CompositorGpuElapsedTime: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a></code>
+                           </span></span><div class='docblock'><p>The amount of time in seconds spent on the GPU by the SDK compositor. Any time spent on the compositor
+will eat away from the available GPU time for the app.</p>
+</div><span id='structfield.CompositorCpuStartToGpuEndElapsedTime' class="structfield">
+                           <span id='CompositorCpuStartToGpuEndElapsedTime.v' class='invisible'>
+                           <code>CompositorCpuStartToGpuEndElapsedTime: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a></code>
+                           </span></span><div class='docblock'><p>The amount of time in seconds spent from the point the CPU kicks off the compositor to the point in time
+the compositor completes the distortion &amp; timewarp on the GPU. In the event the GPU time is not
+available, expect this value to be -1.0f</p>
+</div><span id='structfield.CompositorGpuEndToVsyncElapsedTime' class="structfield">
+                           <span id='CompositorGpuEndToVsyncElapsedTime.v' class='invisible'>
+                           <code>CompositorGpuEndToVsyncElapsedTime: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a></code>
+                           </span></span><div class='docblock'><p>The amount of time in seconds left after the compositor is done on the GPU to the associated V-Sync time.</p>
+
+<p>In the event the GPU time is not available, expect this value to be -1.0f</p>
+</div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html" title="trait core::fmt::Debug">Debug</a> for <a class="struct" href="../ovr_sys/struct.ovrPerfStatsPerCompositorFrame.html" title="struct ovr_sys::ovrPerfStatsPerCompositorFrame">ovrPerfStatsPerCompositorFrame</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/ovr_sys/lib.rs.html#2438' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.fmt' class="method"><span id='fmt.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#tymethod.fmt' class='fnname'>fmt</a>(&amp;self, __arg_0: &amp;mut <a class="struct" href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html" title="struct core::fmt::Formatter">Formatter</a>) -&gt; <a class="type" href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html" title="type core::fmt::Result">Result</a></code></span></h4>
+<div class='docblock'><p>Formats the value using the given formatter.</p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a> for <a class="struct" href="../ovr_sys/struct.ovrPerfStatsPerCompositorFrame.html" title="struct ovr_sys::ovrPerfStatsPerCompositorFrame">ovrPerfStatsPerCompositorFrame</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/ovr_sys/lib.rs.html#2438' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'></div><h3 class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a> for <a class="struct" href="../ovr_sys/struct.ovrPerfStatsPerCompositorFrame.html" title="struct ovr_sys::ovrPerfStatsPerCompositorFrame">ovrPerfStatsPerCompositorFrame</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/ovr_sys/lib.rs.html#2438' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.clone' class="method"><span id='clone.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone' class='fnname'>clone</a>(&amp;self) -&gt; <a class="struct" href="../ovr_sys/struct.ovrPerfStatsPerCompositorFrame.html" title="struct ovr_sys::ovrPerfStatsPerCompositorFrame">ovrPerfStatsPerCompositorFrame</a></code></span></h4>
+<div class='docblock'><p>Returns a copy of the value. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">Read more</a></p>
+</div><h4 id='method.clone_from' class="method"><span id='clone_from.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from' class='fnname'>clone_from</a>(&amp;mut self, source: &amp;Self)</code><div class='since' title='Stable since Rust version 1.0.0'>1.0.0</div></span></h4>
+<div class='docblock'><p>Performs copy-assignment from <code>source</code>. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from">Read more</a></p>
+</div></div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "ovr_sys";
+    </script>
+    <script src="../main.js"></script>
+    <script defer src="../search-index.js"></script>
+</body>
+</html>
