@@ -10,7 +10,7 @@ ovr-sys = "0.1.0"
 Well documented raw bindings to libOVR v1.15.0, the Oculus Rift PC runtime library.
 The documentation is transformed from the original [doxygen](www.doxygen.org) docs.
 
-Until Oculus resumes support for other platforms, this crate will only build on Windows.
+Until Oculus resumes support for other platforms, this crate will only work on Windows.
 Both 32-bit and 64-bit Windows are supported.
 
 ### [Documentation](https://docs.rs/ovr-sys)

@@ -46,7 +46,7 @@
 
 extern crate libc;
 
-#[cfg(all(feature = "directx", target_os="windows"))]
+#[cfg(all(feature = "directx"))]
 extern crate winapi;
 
 #[cfg(feature = "vulkan")]
@@ -68,14 +68,14 @@ use ::std::fmt;
 #[cfg(feature = "opengl")]
 pub mod opengl;
 /// LibOVR functions for performing DirectX interop.
-#[cfg(all(feature = "directx", target_os="windows"))]
+#[cfg(all(feature = "directx"))]
 pub mod directx;
 /// LibOVR functions for performing Vulkan interop.
-#[cfg(all(feature = "vulkan", target_os="windows"))]
+#[cfg(all(feature = "vulkan"))]
 pub mod vulkan;
 /// LibOVR functions associated with audio functionality, including identifying audio devices and
 /// converting audio data into haptics data.
-#[cfg(all(feature = "audio", target_os="windows"))]
+#[cfg(all(feature = "audio"))]
 pub mod audio;
 
 pub const OVR_PRODUCT_VERSION: u32 = 1;
@@ -1722,7 +1722,7 @@ extern "C" {
     ///         such as facing vertically. This can happen if the caller is directly feeding the pose
     ///         of a position-tracked device such as an HMD or controller into this function.
     ///
-    /// see [`ovrTrackingOrigin`](struct.ovrTrackingOrigin.html), [`ovr_GetTrackerPose`](fn.ovr_GetTrackerPose.html), [`ovr_RecenterTrackingOrigin`](fn.ovr_RecenterTrackingOrigin.html)
+    /// see [`ovrTrackingOrigin`](type.ovrTrackingOrigin.html), [`ovr_GetTrackerPose`](fn.ovr_GetTrackerPose.html), [`ovr_RecenterTrackingOrigin`](fn.ovr_RecenterTrackingOrigin.html)
     ///
     pub fn ovr_SpecifyTrackingOrigin(session: ovrSession, originPose: ovrPosef) -> ovrResult;
     /// Clears the ShouldRecenter status bit in `ovrSessionStatus`.
