@@ -1,6 +1,6 @@
 [package]
 name = "ovr-sys"
-version = "0.2.1"
+version = "0.2.2-pre"
 authors = ["Dylan Ede <dylanede@googlemail.com>"]
 description = """
 Well documented raw bindings to libOVR v1.15.0, the Oculus Rift PC runtime library.
