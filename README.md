@@ -13,7 +13,7 @@ The documentation is transformed from the original [doxygen](www.doxygen.org) do
 Until Oculus resumes support for other platforms, this crate will only work on Windows.
 Both 32-bit and 64-bit Windows are supported.
 
-### [Documentation](https://docs.rs/ovr-sys)
+### [Documentation](https://dylanede.github.io/ovr-sys/ovr_sys/)
 
 Additional documentation is available from Oculus directly,
 at https://developer3.oculus.com/documentation/pcsdk/latest/concepts/book-dg/
