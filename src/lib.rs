@@ -38,7 +38,7 @@
 //!    Like all unsafe code uses of `::std::mem::uninitialized()` should be scrutinised for mistakes.
 //!  * Function-like C macros have been translated into functions with the same name.
 //!
-//! Optional features are provided in sub-modules. These features are `audio`, `directx` and `opengl`.
+//! Optional features are provided in sub-modules. These features are `audio`, `directx`, `opengl` and `vulkan`.
 //! These sub-modules will only be present if the corresponding feature has been enabled in the
 //! Cargo manifest. `opengl` is enabled by default.
 

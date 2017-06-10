@@ -34,7 +34,7 @@ As an example, to enable support for just audio and OpenGL:
 
 ```toml
 [dependencies]
-ovr-sys = { version = "0.1.0", features = ["audio", "opengl"] }
+ovr-sys = { version = "0.1.1", features = ["audio", "opengl"] }
 ```
 
 ## License
