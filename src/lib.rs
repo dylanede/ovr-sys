@@ -1763,6 +1763,25 @@ extern "C" {
     /// see [`ovrTrackingState`](struct.ovrTrackingState.html), [`ovr_GetEyePoses`](fn.ovr_GetEyePoses.html),  [`ovr_GetTimeInSeconds`](fn.ovr_GetTimeInSeconds.html)
     ///
     pub fn ovr_GetTrackingState(session: ovrSession, absTime: f64, latencyMarker: ovrBool) -> ovrTrackingState;
+    /// Returns an array of poses, where each pose matches a device type provided by the `deviceTypes`
+    /// array parameter.
+    ///
+    /// **in** `session` Specifies an `ovrSession` previously returned by `ovr_Create`.
+    ///
+    /// **in** `deviceTypes` Array of device types to query for their poses.
+    ///
+    /// **in** `deviceCount` Number of queried poses. This number must match the length of the
+    ///         `outDevicePoses` and `deviceTypes` array.
+    ///
+    /// **in** `absTime` Specifies the absolute future time to predict the return
+    ///        `ovrTrackingState` value. Use 0 to request the most recent tracking state.
+    ///
+    ///  **out** `outDevicePoses` Array of poses, one for each device type in `deviceTypes` arrays.
+    ///
+    /// Returns an `ovrResult` for which `OVR_SUCCESS(result)` is false upon error and
+    /// true upon success.
+    ///
+    pub fn ovr_GetDevicePoses(session: ovrSession, deviceTypes: *const ovrTrackedDeviceType, deviceCount: c_int, absTime: f64, outDevicePoses: *mut ovrPoseStatef) -> ovrResult;
     /// Returns the `ovrTrackerPose` for the given attached tracker.
     ///
     /// `session` Specifies an `ovrSession` previously returned by  `ovr_Create`.
