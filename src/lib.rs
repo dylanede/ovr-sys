@@ -32,6 +32,7 @@
 //!        ConnectionTimeoutMS: 0,
 //!        .. mem::uninitialized()
 //!    };
+//!    # drop(init_params);
 //!    # }
 //!    ```
 //!
@@ -50,7 +51,7 @@ extern crate libc;
 extern crate winapi;
 
 #[cfg(feature = "vulkan")]
-extern crate vk_sys;
+extern crate vks;
 
 use libc::{
     c_char,
@@ -1369,7 +1370,7 @@ extern "C" {
     /// # use ::std::mem;
     /// # fn main() {
     /// # unsafe fn foo() -> Result<(), String> {
-    /// let initParams = ovrInitParams {
+    /// let init_params = ovrInitParams {
     ///     Flags: ovrInit_RequestVersion,
     ///     RequestedMinorVersion: OVR_MINOR_VERSION,
     ///     LogCallback: None,
@@ -1377,7 +1378,7 @@ extern "C" {
     ///     ConnectionTimeoutMS: 0,
     ///     .. mem::uninitialized()
     /// };
-    /// let result = ovr_Initialize(&initParams as *const _);
+    /// let result = ovr_Initialize(&init_params as *const _);
     /// if OVR_FAILURE(result) {
     ///     let mut error_info: ovrErrorInfo = mem::zeroed();
     ///     ovr_GetLastErrorInfo(&mut error_info as *mut _);
@@ -1387,7 +1388,7 @@ extern "C" {
     /// }
     /// # Ok(())
     /// # }
-    /// # unsafe{foo()};
+    /// # unsafe{drop(foo())};
     /// # }
     /// ```
     ///
@@ -1704,7 +1705,7 @@ extern "C" {
     /// ```no_run
     /// # use ovr_sys::*;
     /// # unsafe {
-    /// # let session = panic!();
+    /// # let session = ::std::mem::zeroed();
     /// let ts = ovr_GetTrackingState(session, 0.0, ovrFalse);
     /// ovr_SpecifyTrackingOrigin(session, ts.HeadPose.ThePose);
     /// # }
@@ -2348,10 +2349,11 @@ extern "C" {
     /// ```no_run
     /// # use ovr_sys::*;
     /// # unsafe {
-    /// # let session = panic!();
+    /// # let session = ::std::mem::zeroed();
     /// let hmd_desc = ovr_GetHmdDesc(session);
     /// let eye_size_left = ovr_GetFovTextureSize(session, ovrEye_Left,  hmd_desc.DefaultEyeFov[ovrEye_Left as usize],  1.0);
     /// let eye_size_right = ovr_GetFovTextureSize(session, ovrEye_Right, hmd_desc.DefaultEyeFov[ovrEye_Right as usize], 1.0);
+    /// # drop((eye_size_left, eye_size_right));
     /// # }
     /// ```
     ///
@@ -2414,15 +2416,16 @@ extern "C" {
     /// # use ovr_sys::*;
     /// # use ::std::ptr;
     /// # unsafe {
-    /// # fn foo() -> ! { panic!() }
-    /// # fn bar() -> ! { panic!() }
-    /// # let (session, frame_index) = panic!();
+    /// # fn foo() -> ovrLayerEyeFov { panic!() }
+    /// # fn bar() -> ovrLayerQuad { panic!() }
+    /// # let (session, frame_index) = ::std::mem::zeroed();
     /// // In initialisation
     /// let layer0: ovrLayerEyeFov = foo();
     /// let layer1: ovrLayerQuad = bar();
     /// // In frame loop
     /// let layers = [&layer0.Header as *const _, &layer1.Header as *const _];
     /// let result = ovr_SubmitFrame(session, frame_index, ptr::null(), layers.as_ptr(), 2);
+    /// # drop(result);
     /// # }
     /// ```
     ///
@@ -2737,7 +2740,7 @@ extern "C" {
 /// # use ovr_sys::*;
 /// # use ::std::ffi::CStr;
 /// # unsafe {
-/// # let session = panic!();
+/// # let session = ::std::mem::zeroed();
 /// let perf_hud_mode = ovrPerfHud_LatencyTiming;
 /// ovr_SetInt(session, CStr::from_bytes_with_nul_unchecked(OVR_PERF_HUD_MODE).as_ptr(), perf_hud_mode);
 /// # }
@@ -2767,7 +2770,7 @@ pub const ovrPerfHud_Count: ovrPerfHudMode              = 6;
 /// # use ovr_sys::*;
 /// # use ::std::ffi::CStr;
 /// # unsafe {
-/// # let session = panic!();
+/// # let session = ::std::mem::zeroed();
 /// let layer_hud_mode = ovrLayerHud_Info;
 /// ovr_SetInt(session, CStr::from_bytes_with_nul_unchecked(OVR_LAYER_HUD_MODE).as_ptr(), layer_hud_mode);
 /// # }
@@ -2792,7 +2795,7 @@ pub const ovrLayerHud_Info: ovrLayerHudMode = 1;
 /// # use ovr_sys::*;
 /// # use ::std::ffi::CStr;
 /// # unsafe {
-/// # let session = panic!();
+/// # let session = ::std::mem::zeroed();
 /// let debug_hud_mode = ovrDebugHudStereo_QuadWithCrosshair;
 /// ovr_SetInt(session, CStr::from_bytes_with_nul_unchecked(OVR_DEBUG_HUD_STEREO_MODE).as_ptr(), debug_hud_mode);
 /// # }

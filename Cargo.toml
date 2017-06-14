@@ -21,14 +21,17 @@ links = "ovr"
 
 [dependencies]
 libc = "^0.2"
-vk-sys = { version = "^0.2", optional = true }
+vks = { version = "^0.17", optional = true, default-features = false, features = [ "core_1_0_3" ] }
 winapi = { version = "^0.2", optional = true }
+
+[dev-dependencies]
+vks = { version = "^0.17", default-features = false, features = [ "khr_swapchain_67" ] }
 
 [features]
 default = ["opengl"]
 opengl = []
 directx = ["winapi"]
-vulkan = ["vk-sys"]
+vulkan = ["vks"]
 audio = ["winapi"]
 
 [package.metadata.docs.rs]

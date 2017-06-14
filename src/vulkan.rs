@@ -10,24 +10,24 @@ use ::{
 
 use ::libc::c_int;
 
-use ::vk_sys::{
-    Instance,
-    PhysicalDevice,
-    Queue,
-    Device,
-    Image
+use ::vks::{
+    VkInstance,
+    VkPhysicalDevice,
+    VkQueue,
+    VkDevice,
+    VkImage
 };
 
 extern "C" {
-    /// Find `PhysicalDevice` matching `ovrGraphicsLuid`
+    /// Find `VkPhysicalDevice` matching `ovrGraphicsLuid`
     ///
     /// **in** `session` Specifies an `ovrSession` previously returned by `ovr_Create`.
     ///
     /// **in**  `luid` Specifies the luid returned from `ovr_Create`.
     ///
-    /// **in**  `instance` Specifies an `Instance` to search for matching luids in.
+    /// **in**  `instance` Specifies an `VkInstance` to search for matching luids in.
     ///
-    /// **out** `out_physicalDevice` Returns the `PhysicalDevice` matching the instance and luid.
+    /// **out** `out_physicalDevice` Returns the `VkPhysicalDevice` matching the instance and luid.
     ///
     /// Returns an `ovrResult` indicating success or failure. In the case of failure, use
     ///         `ovr_GetLastErrorInfo` to get more information.
@@ -35,36 +35,36 @@ extern "C" {
     /// **Note**: This function enumerates the current physical devices and returns the one matching the
     /// luid. It must be called at least once prior to any `ovr_CreateTextureSwapChainVk` or
     /// `ovr_CreateMirrorTextureWithOptionsVk` calls, and the instance must remain valid for the lifetime
-    /// of the returned objects. It is assumed the `Device` created by the application will be for the
+    /// of the returned objects. It is assumed the `VkDevice` created by the application will be for the
     /// returned physical device.
     pub fn ovr_GetSessionPhysicalDeviceVk(
         session: ovrSession,
         luid: ovrGraphicsLuid,
-        instance: Instance,
-        out_physicalDevice: *mut PhysicalDevice) -> ovrResult;
+        instance: VkInstance,
+        out_physicalDevice: *mut VkPhysicalDevice) -> ovrResult;
 
     /// Select `Queue` to block on till rendering is complete
     ///
     /// **in**  `session` Specifies an `ovrSession` previously returned by `ovr_Create`.
     ///
-    /// **in**  `queue` Specifies a `Queue` to add a `Fence` operation to and wait on.
+    /// **in**  `queue` Specifies a `VkQueue` to add a `Fence` operation to and wait on.
     ///
     /// Returns an `ovrResult` indicating success or failure. In the case of failure, use
     ///         `ovr_GetLastErrorInfo` to get more information.
     ///
     /// **Note**: The queue may be changed at any time but only the value at the time `ovr_SubmitFrame`
-    /// is called will be used. `ovr_SetSynchonizationQueueVk` must be called with a valid `Queue`
-    /// created on the same `Device` the texture sets were created on prior to the first call to
-    /// `ovr_SubmitFrame`. An internally created `Fence` object will be signalled by the completion
+    /// is called will be used. `ovr_SetSynchonizationQueueVk` must be called with a valid `VkQueue`
+    /// created on the same `VkDevice` the texture sets were created on prior to the first call to
+    /// `ovr_SubmitFrame`. An internally created `VkFence` object will be signalled by the completion
     /// of operations on queue and waited on to synchronize the VR compositor.
     ///
-    pub fn ovr_SetSynchonizationQueueVk(session: ovrSession, queue: Queue) -> ovrResult;
+    pub fn ovr_SetSynchonizationQueueVk(session: ovrSession, queue: VkQueue) -> ovrResult;
 
     /// Create Texture Swap Chain suitable for use with Vulkan
     ///
     /// **in**  `session` Specifies an `ovrSession` previously returned by `ovr_Create`.
     ///
-    /// **in**  `device` Specifies the application's `Device` to create resources with.
+    /// **in**  `device` Specifies the application's `VkDevice` to create resources with.
     ///
     /// **in**  `desc` Specifies requested texture properties. See notes for more info
     ///             about texture format.
@@ -81,7 +81,7 @@ extern "C" {
     ///       distortion-compositor will use for the ShaderResourceView when reading the contents
     ///       of the texture. To that end, it is highly recommended that the application
     ///       requests texture swapchain formats that are in sRGB-space
-    ///       (e.g. OVR_FORMAT_R8G8B8A8_UNORM_SRGB) as the compositor does sRGB-correct rendering.
+    ///       (e.g. `OVR_FORMAT_R8G8B8A8_UNORM_SRGB`) as the compositor does sRGB-correct rendering.
     ///       As such, the compositor relies on the GPU's hardware sampler to do the sRGB-to-linear
     ///       conversion. If the application still prefers to render to a linear format (e.g.
     ///       `OVR_FORMAT_R8G8B8A8_UNORM`) while handling the linear-to-gamma conversion via
@@ -98,7 +98,7 @@ extern "C" {
     ///
     pub fn ovr_CreateTextureSwapChainVk(
         session: ovrSession,
-        device: Device,
+        device: VkDevice,
         desc: *const ovrTextureSwapChainDesc,
         out_TextureSwapChain: *mut ovrTextureSwapChain) -> ovrResult;
 
@@ -123,7 +123,7 @@ extern "C" {
         session: ovrSession,
         chain: ovrTextureSwapChain,
         index: c_int,
-        out_Image: *mut Image) -> ovrResult;
+        out_Image: *mut VkImage) -> ovrResult;
 
     /// Create Mirror Texture which is auto-refreshed to mirror Rift contents produced by this
     /// application.
@@ -133,7 +133,7 @@ extern "C" {
     ///
     /// **in**  `session` Specifies an `ovrSession` previously returned by `ovr_Create`.
     ///
-    /// **in**  `device` Specifies the `Device` to create resources with.
+    /// **in**  `device` Specifies the `VkDevice` to create resources with.
     ///
     /// **in**  `desc` Specifies requested texture properties. See notes for more info
     ///             about texture format.
@@ -147,7 +147,7 @@ extern "C" {
     ///         `ovr_GetLastErrorInfo` to get more information.
     ///
     /// **Note**: The texture format provided in `desc` should be thought of as the format the
-    ///       compositor will use for the `ImageView` when writing into mirror texture. To that end,
+    ///       compositor will use for the `VkImageView` when writing into mirror texture. To that end,
     ///       it is highly recommended that the application requests a mirror texture format that is
     ///       in sRGB-space (e.g. `OVR_FORMAT_R8G8B8A8_UNORM_SRGB`) as the compositor does sRGB-correct
     ///       rendering. If however the application wants to still read the mirror texture as a
@@ -165,8 +165,8 @@ extern "C" {
     /// # use ::std::{mem, ptr};
     /// # use ::ovr_sys::*;
     /// # use ::ovr_sys::vulkan::*;
-    /// # let (session, vk_device, mirror_window_height, mirror_window_width) = panic!();
     /// # unsafe {
+    /// # let (session, vk_device, mirror_window_height, mirror_window_width) = ::std::mem::zeroed();
     /// let mut mirror_texture = ptr::null_mut();
     /// let mirror_desc = ovrMirrorTextureDesc {
     ///     Format: OVR_FORMAT_R8G8B8A8_UNORM_SRGB,
@@ -175,12 +175,13 @@ extern "C" {
     ///     .. mem::zeroed()
     /// };
     /// let result = ovr_CreateMirrorTextureWithOptionsVk(session, vk_device, &mirror_desc as *const _, &mut mirror_texture as *mut _);
-    ///
+    /// # drop(result);
     /// // ...
     ///
     /// // Destroy the texture when done with it.
     /// ovr_DestroyMirrorTexture(session, mirror_texture);
     /// mirror_texture = ptr::null_mut();
+    /// # drop(mirror_texture);
     /// # }
     /// ```
     ///
@@ -188,18 +189,18 @@ extern "C" {
     ///
     pub fn ovr_CreateMirrorTextureWithOptionsVk(
         session: ovrSession,
-        device: Device,
+        device: VkDevice,
         desc: *const ovrMirrorTextureDesc,
         out_MirrorTexture: *mut ovrMirrorTexture) -> ovrResult;
 
-    /// Get a the underlying mirror `Image`
+    /// Get a the underlying mirror `VkImage`
     ///
     /// **in**  `session` Specifies an `ovrSession` previously returned by `ovr_Create`.
     ///
     /// **in**  `mirrorTexture` Specifies an `ovrMirrorTexture` previously returned by
     /// `ovr_CreateMirrorTextureWithOptionsVk`
     ///
-    /// **out** `out_Image` Returns the `Image` pointer retrieved.
+    /// **out** `out_Image` Returns the `VkImage` pointer retrieved.
     ///
     /// Returns an `ovrResult` indicating success or failure. In the case of failure, use
     ///         `ovr_GetLastErrorInfo` to get more information.
@@ -208,29 +209,27 @@ extern "C" {
     ///
     /// ```no_run
     /// # extern crate ovr_sys;
-    /// # extern crate vk_sys;
+    /// # extern crate vks;
     /// # fn main() {
     /// # unsafe {
-    /// # use ovr_sys::*;
     /// # use ovr_sys::vulkan::*;
-    /// # use vk_sys as vk;
-    /// # let (session, mirror_texture, command_buffer, present_image, region, queue, present_info) = panic!();
-    /// # let vk: vk::DevicePointers = panic!();
-    /// let mut mirror_image = 0;
+    /// # use vks::*;
+    /// # let (session, mirror_texture, command_buffer, present_image, region, queue, present_info) = ::std::mem::zeroed();
+    /// let mut mirror_image = ::std::ptr::null_mut();
     /// ovr_GetMirrorTextureBufferVk(session, mirror_texture, &mut mirror_image as *mut _);
     ///
     /// // ...
     ///
-    /// vk.CmdBlitImage(command_buffer, mirror_image, vk::IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, present_image, vk::IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &region as *const _, vk::FILTER_LINEAR);
+    /// vkCmdBlitImage(command_buffer, mirror_image, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, present_image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &region as *const _, VK_FILTER_LINEAR);
     ///
     /// // ...
     ///
-    /// vk.QueuePresentKHR(queue, &present_info as *const _);
+    /// vkQueuePresentKHR(queue, &present_info as *const _);
     /// # }}
     /// ```
     ///
     pub fn ovr_GetMirrorTextureBufferVk(
         session: ovrSession,
         mirrorTexture: ovrMirrorTexture,
-        out_Image: *mut Image) -> ovrResult;
+        out_Image: *mut VkImage) -> ovrResult;
 }
